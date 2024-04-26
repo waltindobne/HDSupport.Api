@@ -22,5 +22,6 @@ namespace HD_Support_API.Repositorios.Interfaces
 
 
         Task<IActionResult> RedefinirSenha(string token, string novaSenha, string confirmacaoSenha);
+        Task<IActionResult> ConfirmarEmail(string token);
     }
 }

@@ -10,7 +10,7 @@ namespace HD_Support_API.Enums
         Emprestado = 2,
         [Description("Equipamento danificado")]
         Danificado = 3,
-        [Description("Equipamento em concerto")]
-        EmConcerto = 4,
+        [Description("Equipamento em conserto")]
+        EmConserto = 4,
     }
 }

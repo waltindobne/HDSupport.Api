@@ -93,8 +93,9 @@ namespace HD_Support_API.Repositorios
         {
             var disponivel = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.Disponivel).Count();
             var ocupado = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.Emprestado).Count();
-            var emreparo = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.EmConcerto || x.statusEquipamento == Enums.StatusEquipamento.Danificado).Count();
-            List<int> dados = [disponivel, ocupado, emreparo];
+            var emreparo = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.EmConserto).Count();
+            var emconserto = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.Danificado).Count();
+            List<int> dados = [disponivel, ocupado, emreparo, emconserto];
             return dados;
         }
     }

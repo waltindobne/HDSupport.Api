@@ -156,5 +156,13 @@ namespace HD_Support_API.Controllers
         {
             return await _repositorio.RedefinirSenha(token, novaSenha,confirmacaoSenha);
         }
+
+        [HttpPost]
+        [Route("ConfirmarEmail")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmarEmail(string token)
+        {
+            return await _repositorio.ConfirmarEmail(token);
+        }
     }
 }

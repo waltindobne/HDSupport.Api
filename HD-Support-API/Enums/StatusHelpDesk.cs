@@ -10,5 +10,7 @@ namespace HD_Support_API.Enums
         Ocupado = 2,
         [Description("Indisponível")]
         Indisponível = 3,
+        [Description("Não confirmado email")]
+        naoConfirmado = 4,
     }
 }

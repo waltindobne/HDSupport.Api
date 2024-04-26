@@ -34,7 +34,63 @@ namespace HD_Support_API.Repositorios
                     var usuarioBancoComEmail = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email == usuario.Email);
                     if(usuarioBancoComEmail == null)
                     {
+                        string tokenRedefinicaoSenha = Guid.NewGuid().ToString();
+
+                        DateTime dataHoraGeracaoToken = DateTime.Now;
+                        string dataHoraGeracaoTokenString = dataHoraGeracaoToken.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        usuario.TokenRedefinicaoSenha = tokenRedefinicaoSenha;
+                        usuario.DataHoraGeracaoToken = dataHoraGeracaoTokenString;
+
+                        var texto = $@"
+                        <html>
+                            <head>
+                                <style>
+                                    body {{font - family: Arial, sans-serif;
+                                        border: 1px solid #000000;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        height: 100vh;
+                                        margin: 0;
+                                        padding: 0;
+                                        text-align: center;
+                                    }}
+                                    header {{width: 100%;
+                                        background-color: #1E90FF;
+                                        color: #F0F8FF;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    }}
+                                    .container {{padding: 20px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        flex-direction: column;
+                                    }}
+                                    .link {{color: blue;
+                                        text-decoration: none;
+                                    }}
+                                </style>
+                            </head>
+                            <body>
+                                <header>
+                                    <div>
+                                        <h1>Confirmação de email - HD-Support</h1>
+                                    </div>
+                                </header>
+                                <div class='container'>
+                                    <p>Olá,</p>
+                                    <p>Seu link de confirmação de email é: <a class='link' href='localhost:3000/recuperacao/{usuario.Id}?token={tokenRedefinicaoSenha}&geracaoToken={dataHoraGeracaoTokenString}'>Clique aqui</a>.</p>
+                                    <p>Não compartilhe seu link de redefinição, ele expirará dentro de 15 minutos.</p>
+                                    <p>Atenciosamente,<br>Equipe HD-Support</p>
+                                </div>
+                            </body>
+                            </html>";
+
+                        await _SendEmailRepository.SendEmailAsync(usuario.Email, "Confirmação de email HD-Support", texto);
                         usuario.Senha = AesOperation.CriarHash(usuario.Senha);
+                        usuario.Status = StatusHelpDesk.naoConfirmado;
                         await _contexto.Usuarios.AddAsync(usuario);
                         await _contexto.SaveChangesAsync();
                         return usuario;
@@ -105,7 +161,7 @@ namespace HD_Support_API.Repositorios
 
             if (Usuario == null)
             {
-                throw new Exception("Nenhum HelpDesk encontrado com o email fornecido.");
+                throw new Exception("Nenhum usuário encontrado com o email fornecido.");
             }
 
             return Usuario.Id;
@@ -172,6 +228,10 @@ namespace HD_Support_API.Repositorios
 
             if (busca != null && busca.Senha == senhaHash)
             {
+                if(busca.Status == StatusHelpDesk.naoConfirmado)
+                {
+                    throw new Exception("Confirme seu email");
+                }
                 return busca;
             }
             throw new Exception("Login inválido");
@@ -243,6 +303,7 @@ namespace HD_Support_API.Repositorios
                             <p>Olá,</p>
                             <p>Seu link de redefinição de senha é: <a class='link' href='localhost:3000/recuperacao/{idUsuario}?token={tokenRedefinicaoSenha}&geracaoToken={dataHoraGeracaoTokenString}'>Clique aqui</a>.</p>
                             <p>Não compartilhe seu link de redefinição, ele expirará dentro de 15 minutos.</p>
+                            <p>Token para confirmar email {tokenRedefinicaoSenha} </p>
                             <p>Atenciosamente,<br>Equipe HD-Support</p>
                         </div>
                     </body>
@@ -285,6 +346,29 @@ namespace HD_Support_API.Repositorios
             return new OkResult();
         }
 
+        public async Task<IActionResult> ConfirmarEmail(string token)
+        {
+
+            var usuario = await BuscarUsuarioPorToken(token);
+
+            if (usuario == null)
+            {
+                return new BadRequestObjectResult("Token inválido ou expirado.");
+            }
+
+            if (TokenRedefinicaoSenhaExpirado(usuario.DataHoraGeracaoToken))
+            {
+                return new BadRequestObjectResult("Token de confirmação de email expirado. Solicite um novo token.");
+            }
+
+            usuario.TokenRedefinicaoSenha = null;
+
+            usuario.Status = StatusHelpDesk.Disponivel;
+            _contexto.Usuarios.Update(usuario);
+
+            await _contexto.SaveChangesAsync();
+            return new OkResult();
+        }
 
         private async Task<Usuarios> BuscarUsuarioPorToken(string token)
         {
