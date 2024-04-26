@@ -1,0 +1,708 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace HD_Support_API.Migrations
+{
+    /// <inheritdoc />
+    public partial class Bug2 : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Conversa_Usuarios_FuncionarioId",
+                table: "Conversa");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Conversa_FuncionarioId",
+                table: "Conversa");
+
+            migrationBuilder.DropColumn(
+                name: "FuncionarioId",
+                table: "Conversa");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "TokenRedefinicaoSenha",
+                table: "Usuarios",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Telefone",
+                table: "Usuarios",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "StatusConversa",
+                table: "Usuarios",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "INTEGER",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Status",
+                table: "Usuarios",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "INTEGER",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Senha",
+                table: "Usuarios",
+                type: "nvarchar(MAX)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Nome",
+                table: "Usuarios",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Email",
+                table: "Usuarios",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "DataHoraGeracaoToken",
+                table: "Usuarios",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Cargo",
+                table: "Usuarios",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Usuarios",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER")
+                .Annotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "UsuarioId",
+                table: "Mensagens",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Mensagem",
+                table: "Mensagens",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "Data_envio",
+                table: "Mensagens",
+                type: "datetime2",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "ConversaId",
+                table: "Mensagens",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Mensagens",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER")
+                .Annotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "statusEquipamento",
+                table: "Equipamento",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "profissional_HD",
+                table: "Equipamento",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "SistemaOperacional",
+                table: "Equipamento",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Processador",
+                table: "Equipamento",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Modelo",
+                table: "Equipamento",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "IdPatrimonio",
+                table: "Equipamento",
+                type: "int",
+                maxLength: 255,
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "INTEGER",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "HeadSet",
+                table: "Equipamento",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "DtEmeprestimoInicio",
+                table: "Equipamento",
+                type: "datetime2",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "DtEmeprestimoFinal",
+                table: "Equipamento",
+                type: "datetime2",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Equipamento",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER")
+                .Annotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "UsuarioId",
+                table: "Emprestimo",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "EquipamentosId",
+                table: "Emprestimo",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Emprestimo",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER")
+                .Annotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "TipoConversa",
+                table: "Conversa",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "INTEGER",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Status",
+                table: "Conversa",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "FuncionariosId",
+                table: "Conversa",
+                type: "int",
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "INTEGER",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "Data_inicio",
+                table: "Conversa",
+                type: "datetime2",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "Data_conclusao",
+                table: "Conversa",
+                type: "datetime2",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "TEXT",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Criptografia",
+                table: "Conversa",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "TEXT");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "ClienteId",
+                table: "Conversa",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Conversa",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "INTEGER")
+                .Annotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversa_FuncionariosId",
+                table: "Conversa",
+                column: "FuncionariosId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Conversa_Usuarios_FuncionariosId",
+                table: "Conversa",
+                column: "FuncionariosId",
+                principalTable: "Usuarios",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Conversa_Usuarios_FuncionariosId",
+                table: "Conversa");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Conversa_FuncionariosId",
+                table: "Conversa");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "TokenRedefinicaoSenha",
+                table: "Usuarios",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Telefone",
+                table: "Usuarios",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "StatusConversa",
+                table: "Usuarios",
+                type: "INTEGER",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Status",
+                table: "Usuarios",
+                type: "INTEGER",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Senha",
+                table: "Usuarios",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(MAX)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Nome",
+                table: "Usuarios",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Email",
+                table: "Usuarios",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "DataHoraGeracaoToken",
+                table: "Usuarios",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Cargo",
+                table: "Usuarios",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Usuarios",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int")
+                .OldAnnotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "UsuarioId",
+                table: "Mensagens",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Mensagem",
+                table: "Mensagens",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Data_envio",
+                table: "Mensagens",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "ConversaId",
+                table: "Mensagens",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Mensagens",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int")
+                .OldAnnotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "statusEquipamento",
+                table: "Equipamento",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "profissional_HD",
+                table: "Equipamento",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "SistemaOperacional",
+                table: "Equipamento",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Processador",
+                table: "Equipamento",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Modelo",
+                table: "Equipamento",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "IdPatrimonio",
+                table: "Equipamento",
+                type: "INTEGER",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "HeadSet",
+                table: "Equipamento",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "DtEmeprestimoInicio",
+                table: "Equipamento",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "DtEmeprestimoFinal",
+                table: "Equipamento",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Equipamento",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int")
+                .OldAnnotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "UsuarioId",
+                table: "Emprestimo",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "EquipamentosId",
+                table: "Emprestimo",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Emprestimo",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int")
+                .OldAnnotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "TipoConversa",
+                table: "Conversa",
+                type: "INTEGER",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Status",
+                table: "Conversa",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "FuncionariosId",
+                table: "Conversa",
+                type: "INTEGER",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Data_inicio",
+                table: "Conversa",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Data_conclusao",
+                table: "Conversa",
+                type: "TEXT",
+                nullable: true,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Criptografia",
+                table: "Conversa",
+                type: "TEXT",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "ClienteId",
+                table: "Conversa",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "Conversa",
+                type: "INTEGER",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int")
+                .OldAnnotation("SqlServer:Identity", "1, 1");
+
+            migrationBuilder.AddColumn<int>(
+                name: "FuncionarioId",
+                table: "Conversa",
+                type: "INTEGER",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversa_FuncionarioId",
+                table: "Conversa",
+                column: "FuncionarioId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Conversa_Usuarios_FuncionarioId",
+                table: "Conversa",
+                column: "FuncionarioId",
+                principalTable: "Usuarios",
+                principalColumn: "Id");
+        }
+    }
+}

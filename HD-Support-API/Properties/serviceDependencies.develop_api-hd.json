@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "apis1": {
+      "apiEndpoint": "https://hd-support-apiapi.azure-api.net/hd-support-api",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/HD-Support-APIapi/apis/HD-Support-API",
+      "type": "apis.azure"
+    }
+  }
+}

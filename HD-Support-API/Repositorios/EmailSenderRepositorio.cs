@@ -1,0 +1,34 @@
+﻿using HD_Support_API.Repositorios.Interfaces;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
+
+namespace HD_Support_API.Repositorios
+{
+    public class EmailSenderRepositorio : IEmailSender
+    {
+        public Task SendEmailAsync(string email, string subject, string mensagem)
+        {
+            var mail = "testejoazinl2r2@hotmail.com";
+            var senha = "admin123Empl@yer";
+
+            var client = new SmtpClient("smtp-mail.outlook.com", 587)
+            {
+                EnableSsl = true,
+                Credentials = new NetworkCredential(mail, senha)
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(mail),
+                Subject = subject,
+                Body = mensagem,
+                IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(email);
+
+            return client.SendMailAsync(mailMessage);
+        }
+    }
+}
