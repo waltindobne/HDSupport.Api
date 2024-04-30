@@ -23,7 +23,7 @@ namespace HD_Support_API.Repositorios
                 emprestimo.Equipamentos = _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == emprestimo.EquipamentosId);
                 emprestimo.Usuario = _contexto.Usuarios.FirstOrDefault(x => x.Id == emprestimo.UsuarioId);
                 await _contexto.Emprestimo.AddAsync(emprestimo);
-                _contexto.SaveChangesAsync();
+                await _contexto.SaveChangesAsync();
                 return emprestimo;
             }
             throw new Exception("Equipamento em emprestimo ou funcionario já possui um emprestimo.");
@@ -65,11 +65,12 @@ namespace HD_Support_API.Repositorios
             throw new Exception($"Não foi possivel atualizar o emprestimo");
         }
 
-        public async Task<Emprestimos> BuscarEmprestimos(int idPatrimonio, string nome)
+        public async Task<Emprestimos> BuscarEmprestimos(int idPatrimonio, string email)
         {
-            return _contexto.Emprestimo.FirstOrDefault(
+            var emprestimo = _contexto.Emprestimo.FirstOrDefault(
                 x => x.Equipamentos.IdPatrimonio == idPatrimonio ||
-                x.Usuario.Nome == nome);
+                x.Usuario.Email == email);
+            return emprestimo;
         }
 
         public async Task<Emprestimos> BuscarEmprestimosPorID(int id)
@@ -98,6 +99,15 @@ namespace HD_Support_API.Repositorios
             {
                 throw new Exception("Ainda não temos nenhum emprestimo registrado");
             }
+            for(var i = 0; i < lista.Count;i++)
+            {
+                var emp = lista[i];
+                var equipamento = await _contexto.Equipamento.FindAsync(emp.EquipamentosId);
+                var usuario = await _contexto.Usuarios.FindAsync(emp.UsuarioId);
+                lista[i].Equipamentos = equipamento;
+                lista[i].Usuario = usuario;
+            }
+
             return await _contexto.Emprestimo.ToListAsync();
         }
     }

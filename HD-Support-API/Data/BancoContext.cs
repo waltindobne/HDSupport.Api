@@ -31,6 +31,6 @@ namespace HD_Support_API.Components
                 "Host=172.210.165.238;" +
                 "Port=5432;Database=default_db;" +
                 "User Id=escolinha;" +
-                "Password=senha;");
+                "Password=escolinha@bne2024;");
     }
 }
