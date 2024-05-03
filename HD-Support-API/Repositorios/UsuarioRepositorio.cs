@@ -1,6 +1,7 @@
 ﻿using EncryptionDecryptionUsingSymmetricKey;
 using HD_Support_API.Components;
 using HD_Support_API.Enums;
+using HD_Support_API.Metodos;
 using HD_Support_API.Models;
 using HD_Support_API.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -405,5 +406,11 @@ namespace HD_Support_API.Repositorios
             return expirado;
         }
 
+        public async Task<Usuarios> BuscarPorTokenJWT(string token)
+        {
+            var email = TokenService.ReadJWT(token);
+            var perfil = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email==email);
+            return perfil;
+        }
     }
 }

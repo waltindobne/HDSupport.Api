@@ -20,7 +20,7 @@ namespace HD_Support_API.Repositorios.Interfaces
         Task<Usuarios> Login(string email, string senha);
         Task RecuperarSenha(string email);
 
-
+        Task<Usuarios> BuscarPorTokenJWT(string token);
         Task<IActionResult> RedefinirSenha(string token, string novaSenha, string confirmacaoSenha);
         Task<IActionResult> ConfirmarEmail(string token);
     }

@@ -105,6 +105,21 @@ namespace HD_Support_API.Controllers
             return Ok(ExcluirPerfil);
         }
 
+        [HttpGet]
+        [Route("BuscarPorTokenJWT/{token}")]
+        [Authorize(Roles = "Funcionario,Gerente,HelpDesk,RH")]
+        public async Task<IActionResult> BuscarPorTokenJWT(string token)
+        {
+            var Perfil = await _repositorio.BuscarPorTokenJWT(token);
+
+            if (Perfil == null)
+            {
+                return NotFound($"Perfil não encontrado");
+            }
+
+            return Ok(Perfil);
+        }
+
         [HttpPost]
         [Route("Login")]
         [AllowAnonymous]

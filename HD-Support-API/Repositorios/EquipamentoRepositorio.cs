@@ -19,6 +19,8 @@ namespace HD_Support_API.Repositorios
             var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == equipamento.IdPatrimonio);
             if(verificacao == null)
             {
+                Console.WriteLine(DateTime.UtcNow);
+                equipamento.DtEmeprestimoInicio = DateTime.UtcNow;
                 await _contexto.Equipamento.AddAsync(equipamento);
                 _contexto.SaveChanges();
                 return equipamento;
