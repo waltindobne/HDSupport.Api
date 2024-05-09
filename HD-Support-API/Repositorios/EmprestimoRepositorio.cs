@@ -42,8 +42,9 @@ namespace HD_Support_API.Repositorios
             }
             if(verificarEquipamento == null && verificarFuncionario == null)
             {
-                busca.Equipamentos = emprestimo.Equipamentos;
-                busca.Usuario = emprestimo.Usuario;
+                var equipamento = await _contexto.Equipamento.FirstOrDefaultAsync(x => x.IdPatrimonio == emprestimo.EquipamentosId);
+                busca.EquipamentosId = equipamento.Id;
+                busca.UsuarioId = emprestimo.UsuarioId;
 
                 _contexto.Emprestimo.Update(busca);
                 await _contexto.SaveChangesAsync();
