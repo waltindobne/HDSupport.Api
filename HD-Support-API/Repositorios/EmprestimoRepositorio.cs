@@ -14,14 +14,18 @@ namespace HD_Support_API.Repositorios
         {
             _contexto = contexto;
         }*/
-        public async Task<Emprestimos> AdicionarEmprestimo(Emprestimos emprestimo)
+        public async Task<Emprestimos> AdicionarEmprestimo(int idPatrimonio, string email)
         {
-            var verificarEquipamento = _contexto.Emprestimo.FirstOrDefault(x => x.Equipamentos.IdPatrimonio == emprestimo.Equipamentos.IdPatrimonio);
-            var verificarFuncionario = _contexto.Emprestimo.FirstOrDefault(x => x.Usuario.Id == emprestimo.Usuario.Id);
+            var verificarEquipamento = _contexto.Emprestimo.FirstOrDefault(x => x.Equipamentos.IdPatrimonio == idPatrimonio);
+            var verificarFuncionario = _contexto.Emprestimo.FirstOrDefault(x => x.Usuario.Email == email);
             if(verificarEquipamento == null && verificarFuncionario == null)
             {
-                emprestimo.Equipamentos = _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == emprestimo.EquipamentosId);
-                emprestimo.Usuario = _contexto.Usuarios.FirstOrDefault(x => x.Id == emprestimo.UsuarioId);
+                Emprestimos emprestimo = new Emprestimos();
+                emprestimo.Equipamentos = _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == idPatrimonio);
+                emprestimo.Usuario = _contexto.Usuarios.FirstOrDefault(x => x.Email == email);
+                emprestimo.EquipamentosId = emprestimo.Equipamentos.Id;
+                emprestimo.UsuarioId = emprestimo.Usuario.Id;
+
                 await _contexto.Emprestimo.AddAsync(emprestimo);
                 await _contexto.SaveChangesAsync();
                 return emprestimo;

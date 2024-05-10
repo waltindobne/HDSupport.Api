@@ -29,14 +29,14 @@ namespace HD_Support_API.Controllers
         [HttpPost]
         [Route("Registro-Emprestimo")]
         [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> AdicionarEmprestimo([FromBody] Emprestimos emprestimo)
+        public async Task<IActionResult> AdicionarEmprestimo(int idPatrimonio, string email)
         {
-            if (emprestimo == null)
+            if (idPatrimonio <= 0 || email == "")
             {
                 return BadRequest("Dados do HelpDesk não fornecidos");
             }
 
-            var equipamentoAdicionado = await _repositorio.AdicionarEmprestimo(emprestimo);
+            var equipamentoAdicionado = await _repositorio.AdicionarEmprestimo(idPatrimonio, email);
 
             return Ok(equipamentoAdicionado);
         }
