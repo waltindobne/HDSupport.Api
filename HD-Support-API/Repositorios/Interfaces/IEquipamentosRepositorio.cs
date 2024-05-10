@@ -11,5 +11,6 @@ namespace HD_Support_API.Repositorios.Interfaces
         Task<Equipamentos> AtualizarEquipamento(Equipamentos equipamento, int id);
         Task<bool> ExcluirEquipamento(int id);
         Task<List<int>> DadosEquipamentoPizza();
+        Task<List<int>> DadosEquipamentoBarras();
     }
 }

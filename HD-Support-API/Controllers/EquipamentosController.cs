@@ -87,10 +87,25 @@ namespace HD_Support_API.Controllers
 
         [HttpGet]
         [Route("Dados-Equipamento-Pizza")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Gerente,HelpDesk,RH")]
         public async Task<IActionResult> DadosEquipamentoPizza()
         {
             var dados = await _repositorio.DadosEquipamentoPizza();
+
+            if (dados != null)
+            {
+                return Ok(dados);
+            }
+
+            return BadRequest("Erro ao procurar os dados no banco de dados");
+        }
+
+        [HttpGet]
+        [Route("Dados-Equipamento-Barras")]
+        [Authorize(Roles = "Gerente,HelpDesk,RH")]
+        public async Task<IActionResult> DadosEquipamentoBarras()
+        {
+            var dados = await _repositorio.DadosEquipamentoBarras();
 
             if (dados != null)
             {

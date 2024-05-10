@@ -100,5 +100,18 @@ namespace HD_Support_API.Repositorios
             List<int> dados = [disponivel, ocupado, emreparo, emconserto];
             return dados;
         }
+
+        public async Task<List<int>> DadosEquipamentoBarras()
+        {
+            var notebook = _contexto.Equipamento.Where(x => x.Tipo == "Desktop").Count();
+            var desktop = _contexto.Equipamento.Where(x => x.Tipo == "Notebook").Count();
+            var monitor = _contexto.Equipamento.Where(x => x.Tipo == "Monitor").Count();
+            var headset = _contexto.Equipamento.Where(x => x.Tipo == "Headset").Count();
+            var webcam = _contexto.Equipamento.Where(x => x.Tipo == "Webcam").Count();
+            var teclado = _contexto.Equipamento.Where(x => x.Tipo == "Teclado").Count();
+            var mouse = _contexto.Equipamento.Where(x => x.Tipo == "Mouse").Count();
+            List<int> dados = [notebook, desktop, monitor, headset, webcam, teclado, mouse];
+            return dados;
+        }
     }
 }

@@ -148,6 +148,7 @@ namespace HD_Support_API.Controllers
 
         [HttpGet]
         [Route("Dados-Chamados-Dashboard")]
+        [Authorize(Roles = "Gerente,HelpDesk,RH")]
         public async Task<IActionResult> DadosChamadosDashboard()
         {
             var dados = await _repositorio.DadosChamadosDashboard();

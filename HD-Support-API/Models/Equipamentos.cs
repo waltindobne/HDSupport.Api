@@ -8,6 +8,8 @@ namespace HD_Support_API.Models
         public int? IdPatrimonio { get; set; }
         public string? Modelo { get; set; }
         public string? Tipo {  get; set; }
+
+        //tirar esses três e trocar por informações extras
         public string? Processador { get; set; }
         public string? SistemaOperacional { get; set; }
         public string? HeadSet { get; set; } //Tirar isso
