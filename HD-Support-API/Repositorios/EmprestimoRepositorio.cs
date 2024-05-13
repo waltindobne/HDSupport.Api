@@ -17,15 +17,19 @@ namespace HD_Support_API.Repositorios
         public async Task<Emprestimos> AdicionarEmprestimo(int idPatrimonio, string email)
         {
             var verificarEquipamento = _contexto.Emprestimo.FirstOrDefault(x => x.Equipamentos.IdPatrimonio == idPatrimonio);
-            var verificarFuncionario = _contexto.Emprestimo.FirstOrDefault(x => x.Usuario.Email == email);
+            var verificarFuncionario = _contexto.Emprestimo.FirstOrDefault(x => x.Usuario.Email == email && x.Equipamentos.Tipo == "Desktop" || x.Usuario.Email == email && x.Equipamentos.Tipo == "Notebook");
             if(verificarEquipamento == null && verificarFuncionario == null)
             {
                 Emprestimos emprestimo = new Emprestimos();
                 emprestimo.Equipamentos = _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == idPatrimonio);
                 emprestimo.Usuario = _contexto.Usuarios.FirstOrDefault(x => x.Email == email);
+                if(emprestimo.Usuario== null)
+                {
+                    throw new Exception("Nenhum usuário encontrado com esse email.");
+                }
                 emprestimo.EquipamentosId = emprestimo.Equipamentos.Id;
                 emprestimo.UsuarioId = emprestimo.Usuario.Id;
-                emprestimo.Equipamentos.DtEmeprestimoInicio = DateTime.Now.AddHours(-3);
+                emprestimo.Equipamentos.DtEmeprestimoInicio = DateTime.UtcNow;
 
                 await _contexto.Emprestimo.AddAsync(emprestimo);
                 await _contexto.SaveChangesAsync();

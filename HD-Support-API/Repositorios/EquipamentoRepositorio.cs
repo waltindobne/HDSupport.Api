@@ -89,7 +89,8 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<Equipamentos>> ListarEquipamentos()
         {
-            return await _contexto.Equipamento.ToListAsync();
+            var equipamentos = await _contexto.Equipamento.ToListAsync();
+            return equipamentos;
         }
 
         public async Task<List<int>> DadosEquipamentoPizza()
