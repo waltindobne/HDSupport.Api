@@ -25,6 +25,7 @@ namespace HD_Support_API.Repositorios
                 emprestimo.Usuario = _contexto.Usuarios.FirstOrDefault(x => x.Email == email);
                 emprestimo.EquipamentosId = emprestimo.Equipamentos.Id;
                 emprestimo.UsuarioId = emprestimo.Usuario.Id;
+                emprestimo.Equipamentos.DtEmeprestimoInicio = DateTime.Now.AddHours(-3);
 
                 await _contexto.Emprestimo.AddAsync(emprestimo);
                 await _contexto.SaveChangesAsync();

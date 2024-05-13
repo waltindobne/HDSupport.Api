@@ -50,7 +50,7 @@ namespace HD_Support_API.Repositorios
                 Usuarios funcionario = await _contexto.Usuarios.FindAsync(conversa.FuncionariosId);
                 conversa.Funcionarios = funcionario;
             }
-            conversa.Data_inicio = DateTime.Now;
+            conversa.Data_inicio = DateTime.Now.AddHours(-3);
             await _contexto.Conversa.AddAsync(conversa);
             await _contexto.SaveChangesAsync();
             return conversa;
@@ -62,6 +62,7 @@ namespace HD_Support_API.Repositorios
             mensagem.Mensagem = AesOperation.Encriptar(criptografia, mensagem.Mensagem);
             mensagem.ConversaId = idConversa;
             mensagem.Usuario = await _contexto.Usuarios.FindAsync(mensagem.UsuarioId);
+            mensagem.Data_envio = DateTime.Now.AddHours(-3);
             await _contexto.Mensagens.AddAsync(mensagem);
             await _contexto.SaveChangesAsync();
             return conversa;
@@ -87,6 +88,7 @@ namespace HD_Support_API.Repositorios
                 funcionario.Status = StatusHelpDesk.Disponivel;
                 _contexto.Usuarios.Update(funcionario);
             }
+            conversaPorId.Data_conclusao = DateTime.Now.AddHours(-3);
 
             _contexto.Conversa.Update(conversaPorId);
             await _contexto.SaveChangesAsync();
