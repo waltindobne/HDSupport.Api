@@ -1,7 +1,9 @@
 ﻿using HD_Support_API.Components;
+using HD_Support_API.Enums;
 using HD_Support_API.Models;
 using HD_Support_API.Repositorios.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace HD_Support_API.Repositorios
 {
@@ -40,8 +42,7 @@ namespace HD_Support_API.Repositorios
             {
                 equipamentosPorId.IdPatrimonio = equipamento.IdPatrimonio;
                 equipamentosPorId.Modelo = equipamento.Modelo;
-                equipamentosPorId.Processador = equipamento.Processador;
-                equipamentosPorId.HeadSet = equipamento.HeadSet;
+                equipamentosPorId.Detalhes = equipamento.Detalhes;
 
                 _contexto.Equipamento.Update(equipamentosPorId);
                 await _contexto.SaveChangesAsync();
@@ -101,16 +102,22 @@ namespace HD_Support_API.Repositorios
             return dados;
         }
 
-        public async Task<List<int>> DadosEquipamentoBarras()
+        public async Task<List<List<int>>> DadosEquipamentoBarras()
         {
-            var notebook = _contexto.Equipamento.Where(x => x.Tipo == "Desktop").Count();
-            var desktop = _contexto.Equipamento.Where(x => x.Tipo == "Notebook").Count();
-            var monitor = _contexto.Equipamento.Where(x => x.Tipo == "Monitor").Count();
-            var headset = _contexto.Equipamento.Where(x => x.Tipo == "Headset").Count();
-            var webcam = _contexto.Equipamento.Where(x => x.Tipo == "Webcam").Count();
-            var teclado = _contexto.Equipamento.Where(x => x.Tipo == "Teclado").Count();
-            var mouse = _contexto.Equipamento.Where(x => x.Tipo == "Mouse").Count();
-            List<int> dados = [notebook, desktop, monitor, headset, webcam, teclado, mouse];
+            List<String> tipos = ["Desktop", "Notebook", "Monitor", "Headset", "Webcam", "Teclado", "Mouse"];
+            List<List<int>> dados = [];
+            for (int i = 0; i < tipos.Count(); i++)
+            {
+                List<int> equipamento = [];
+                var tipo = tipos[i];
+                for(int j = 1; j < 5; j++)
+                {
+                    var resultado = _contexto.Equipamento.Where(x => x.Tipo == tipo && x.statusEquipamento == (StatusEquipamento)j).Count();
+                    equipamento.Add(resultado);
+                }
+                dados.Add(equipamento);
+            }
+
             return dados;
         }
     }
