@@ -225,7 +225,7 @@ namespace HD_Support_API.Repositorios
         public async Task<Usuarios> Login(string email, string senha)
         {
             var senhaHash = AesOperation.CriarHash(senha);
-            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => EF.Functions.Like(x.Email, email));
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
 
             if (busca != null && busca.Senha == senhaHash)
             {

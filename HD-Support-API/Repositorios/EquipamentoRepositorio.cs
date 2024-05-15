@@ -95,10 +95,10 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<int>> DadosEquipamentoPizza()
         {
-            var disponivel = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.Disponivel).Count();
-            var ocupado = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.Emprestado).Count();
-            var emreparo = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.EmConserto).Count();
-            var emconserto = _contexto.Equipamento.Where(x => x.statusEquipamento == Enums.StatusEquipamento.Danificado).Count();
+            var disponivel = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.Disponivel).Count();
+            var ocupado = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.Emprestado).Count();
+            var emreparo = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.EmConserto).Count();
+            var emconserto = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.Danificado).Count();
             List<int> dados = [disponivel, ocupado, emreparo, emconserto];
             return dados;
         }
@@ -113,7 +113,7 @@ namespace HD_Support_API.Repositorios
                 var tipo = tipos[i];
                 for(int j = 1; j < 5; j++)
                 {
-                    var resultado = _contexto.Equipamento.Where(x => x.Tipo == tipo && x.statusEquipamento == (StatusEquipamento)j).Count();
+                    var resultado = _contexto.Equipamento.Where(x => x.Tipo == tipo && x.StatusEquipamento == (StatusEquipamento)j).Count();
                     equipamento.Add(resultado);
                 }
                 dados.Add(equipamento);

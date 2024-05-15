@@ -11,7 +11,7 @@ namespace HD_Support_API.Models
         public string? Detalhes { get; set; }
         public DateTime DtEmeprestimoInicio { get; set; }
         public DateTime DtEmeprestimoFinal { get; set; }
-        public StatusEquipamento statusEquipamento { get; set; }
+        public StatusEquipamento StatusEquipamento { get; set; }
         public string? profissional_HD { get; set; }
     }
 }

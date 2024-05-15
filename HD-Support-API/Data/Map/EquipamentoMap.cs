@@ -15,7 +15,7 @@ namespace HD_Support_API.Data.Map
             builder.Property(x => x.Tipo);
             builder.Property(x => x.DtEmeprestimoInicio);
             builder.Property(x => x.DtEmeprestimoFinal);
-            builder.Property(x => x.statusEquipamento);
+            builder.Property(x => x.StatusEquipamento);
             builder.Property(x => x.profissional_HD);
         }
     }
