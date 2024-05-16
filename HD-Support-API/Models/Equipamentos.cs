@@ -5,7 +5,7 @@ namespace HD_Support_API.Models
     public class Equipamentos
     {
         public int Id { get; set; }
-        public int? IdPatrimonio { get; set; }
+        public string? IdPatrimonio { get; set; }
         public string? Modelo { get; set; }
         public string? Tipo {  get; set; }
         public string? Detalhes { get; set; }

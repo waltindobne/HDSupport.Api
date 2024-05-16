@@ -210,14 +210,14 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<Usuarios>> ListarFuncionario()
         {
-            var lista = await _contexto.Usuarios.Where(x => x.Cargo == "Funcionario" || x.Cargo == "RH").ToListAsync();
+            var lista = await _contexto.Usuarios.Where(x => x.Cargo == "Funcionario" && x.Status != StatusHelpDesk.naoConfirmado || x.Cargo == "RH" && x.Status != StatusHelpDesk.naoConfirmado).ToListAsync();
             return lista;
         }
 
 
         public async Task<List<Usuarios>> ListarHelpDesk()
         {
-            var lista = await _contexto.Usuarios.Where(x => x.Cargo == "HelpDesk").ToListAsync();
+            var lista = await _contexto.Usuarios.Where(x => x.Cargo == "HelpDesk" && x.Status != StatusHelpDesk.naoConfirmado).ToListAsync();
 
             return lista;
         }
@@ -409,8 +409,9 @@ namespace HD_Support_API.Repositorios
         public async Task<Usuarios> BuscarPorTokenJWT(string token)
         {
             var email = TokenService.ReadJWT(token);
-            var perfil = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email==email);
-            return perfil;
+            email.Replace(" ", "");
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
+            return busca;
         }
     }
 }

@@ -43,6 +43,9 @@ namespace HD_Support_API.Repositorios
                 equipamentosPorId.IdPatrimonio = equipamento.IdPatrimonio;
                 equipamentosPorId.Modelo = equipamento.Modelo;
                 equipamentosPorId.Detalhes = equipamento.Detalhes;
+                equipamentosPorId.DtEmeprestimoInicio = equipamentosPorId.DtEmeprestimoInicio.ToUniversalTime();
+
+                Console.WriteLine(equipamentosPorId.DtEmeprestimoInicio.ToUniversalTime());
 
                 _contexto.Equipamento.Update(equipamentosPorId);
                 await _contexto.SaveChangesAsync();
@@ -53,7 +56,7 @@ namespace HD_Support_API.Repositorios
 
         }
 
-        public async Task<Equipamentos> BuscarEquipamentos(int idPatrimonio)
+        public async Task<Equipamentos> BuscarEquipamentos(string idPatrimonio)
         {
             return  _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == idPatrimonio);
         }        
@@ -76,7 +79,9 @@ namespace HD_Support_API.Repositorios
                 throw new Exception($"Equipamento de Id:{id} não encontrado na base de dados.");
             }
 
-            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.EquipamentosId == busca.IdPatrimonio);
+            var idPatrimonio = Convert.ToInt16(busca.IdPatrimonio);
+
+            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.EquipamentosId == idPatrimonio);
             if (emprestimo != null)
                 _contexto.Remove(emprestimo);
 

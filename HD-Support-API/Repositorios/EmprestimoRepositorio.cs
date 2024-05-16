@@ -14,7 +14,7 @@ namespace HD_Support_API.Repositorios
         {
             _contexto = contexto;
         }*/
-        public async Task<Emprestimos> AdicionarEmprestimo(int idPatrimonio, string email)
+        public async Task<Emprestimos> AdicionarEmprestimo(string idPatrimonio, string email)
         {
             var verificarEquipamento = _contexto.Emprestimo.FirstOrDefault(x => x.Equipamentos.IdPatrimonio == idPatrimonio);
             var verificarFuncionario = _contexto.Emprestimo.FirstOrDefault(x => x.Usuario.Email == email && x.Equipamentos.Tipo == "Desktop" || x.Usuario.Email == email && x.Equipamentos.Tipo == "Notebook");
@@ -51,7 +51,7 @@ namespace HD_Support_API.Repositorios
             }
             if(verificarEquipamento == null && verificarFuncionario == null)
             {
-                var equipamento = await _contexto.Equipamento.FirstOrDefaultAsync(x => x.IdPatrimonio == emprestimo.EquipamentosId);
+                var equipamento = await _contexto.Equipamento.FirstOrDefaultAsync(x => x.IdPatrimonio == Convert.ToString(emprestimo.EquipamentosId));
                 busca.EquipamentosId = equipamento.Id;
                 busca.UsuarioId = emprestimo.UsuarioId;
 
@@ -75,7 +75,7 @@ namespace HD_Support_API.Repositorios
             throw new Exception($"Não foi possivel atualizar o emprestimo");
         }
 
-        public async Task<Emprestimos> BuscarEmprestimos(int idPatrimonio, string email)
+        public async Task<Emprestimos> BuscarEmprestimos(string idPatrimonio, string email)
         {
             var emprestimo = _contexto.Emprestimo.FirstOrDefault(
                 x => x.Equipamentos.IdPatrimonio == idPatrimonio ||

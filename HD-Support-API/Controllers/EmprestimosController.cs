@@ -29,9 +29,9 @@ namespace HD_Support_API.Controllers
         [HttpPost]
         [Route("Registro-Emprestimo")]
         [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> AdicionarEmprestimo(int idPatrimonio, string email)
+        public async Task<IActionResult> AdicionarEmprestimo(string idPatrimonio, string email)
         {
-            if (idPatrimonio <= 0 || email == "")
+            if (idPatrimonio == "" || email == "")
             {
                 return BadRequest("Dados do HelpDesk não fornecidos");
             }
