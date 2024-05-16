@@ -117,6 +117,7 @@ namespace HD_Support_API.Repositorios
             for (int i = 0; i < MensagensLista.Count;i++)
             {
                 MensagensLista[i].Mensagem = AesOperation.Descriptar(criptografia, MensagensLista[i].Mensagem);
+                MensagensLista[i].Usuario = await _contexto.Usuarios.FindAsync(MensagensLista[i].UsuarioId);
             }
             return MensagensLista;
         }
@@ -170,6 +171,12 @@ namespace HD_Support_API.Repositorios
             else
             {
                 ConversaLista = await _contexto.Conversa.Where(x => x.TipoConversa == tipoConversa && x.Status != StatusConversa.NaoAceito).ToListAsync();
+            }
+
+            for(var i = 0; i < ConversaLista.Count(); i++)
+            {
+                ConversaLista[i].Cliente = await _contexto.Usuarios.FindAsync(ConversaLista[i].ClienteId);
+                ConversaLista[i].Funcionarios = await _contexto.Usuarios.FindAsync(ConversaLista[i].FuncionariosId);
             }
             
             return ConversaLista;

@@ -38,11 +38,12 @@ namespace HD_Support_API.Repositorios
             {
                 throw new Exception($"Equipamento de Id:{id} não encontrado na base de dados.");
             }
-            if(verificacao == null)
+            if(verificacao == null || verificacao.IdPatrimonio == equipamentosPorId.IdPatrimonio)
             {
                 equipamentosPorId.IdPatrimonio = equipamento.IdPatrimonio;
                 equipamentosPorId.Modelo = equipamento.Modelo;
                 equipamentosPorId.Detalhes = equipamento.Detalhes;
+                equipamentosPorId.StatusEquipamento = equipamento.StatusEquipamento;
                 equipamentosPorId.DtEmeprestimoInicio = equipamentosPorId.DtEmeprestimoInicio.ToUniversalTime();
 
                 Console.WriteLine(equipamentosPorId.DtEmeprestimoInicio.ToUniversalTime());
