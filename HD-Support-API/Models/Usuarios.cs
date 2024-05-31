@@ -13,6 +13,7 @@ namespace HD_Support_API.Models
         public string Senha { get; set; }
         public string Telefone { get; set; }
         public string Cargo { get; set; }
+        public string? Imagem { get; set; }
         public StatusHelpDesk? Status { get; set; }
         public StatusHelpDeskConversa? StatusConversa { get; set; }
         public string? TokenRedefinicaoSenha { get; set; }

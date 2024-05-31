@@ -1,5 +1,7 @@
 ﻿using HD_Support_API.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Buffers.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace HD_Support_API.Repositorios.Interfaces
 {

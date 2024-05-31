@@ -1,4 +1,6 @@
 ﻿using EncryptionDecryptionUsingSymmetricKey;
+using Firebase.Auth;
+using Firebase.Storage;
 using HD_Support_API.Components;
 using HD_Support_API.Enums;
 using HD_Support_API.Metodos;
@@ -6,6 +8,7 @@ using HD_Support_API.Models;
 using HD_Support_API.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -17,6 +20,11 @@ namespace HD_Support_API.Repositorios
     {
         private readonly BancoContext _contexto = new BancoContext();
         private readonly IEmailSender _SendEmailRepository;
+
+        private static string apiKey = "AIzaSyDYYelJzgqnPaAL6_be0l5UHQWVdu-DK_I";
+        private static string Bucket = "hd-support-c57ae.appspot.com";
+        private static string AuthEmail = "hdsupport_@gmail.com";
+        private static string AuthPassword = "hdsupport_";
 
         public UsuarioRepositorio(IEmailSender sendEmailRepository)
         {
@@ -90,8 +98,42 @@ namespace HD_Support_API.Repositorios
                             </html>";
 
                         await _SendEmailRepository.SendEmailAsync(usuario.Email, "Confirmação de email HD-Support", texto);
+
+                        var imageAccessLink = "";
+
+                        var imagem = usuario.Imagem;
+                        if (imagem != "")
+                        {
+                            byte[] bytes = Convert.FromBase64String(imagem);
+
+                            var firebaseAutProvider = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
+                            var firebaseAuthLink = await firebaseAutProvider.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+
+                            //  CancellationTokenSource can be used to cancel the upload midway
+                            var cancellation = new CancellationTokenSource();
+
+                            using (MemoryStream fileStream = new MemoryStream(bytes))
+                            {
+                                var task = new FirebaseStorage(
+                                    Bucket,
+                                    new FirebaseStorageOptions
+                                    {
+                                        AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
+                                        ThrowOnCancel = true // when cancel the upload, exception is thrown. By default no exception is thrown
+                                    })
+                                  .Child("images")
+                                  .PutAsync(fileStream, cancellation.Token);
+                                //task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
+                                imageAccessLink = await task;
+                                fileStream.Dispose();
+                            }
+                        }
+                        
+
                         usuario.Senha = AesOperation.CriarHash(usuario.Senha);
+
                         usuario.Status = StatusHelpDesk.naoConfirmado;
+                        usuario.Imagem = imageAccessLink;
                         await _contexto.Usuarios.AddAsync(usuario);
                         await _contexto.SaveChangesAsync();
                         return usuario;
@@ -142,6 +184,51 @@ namespace HD_Support_API.Repositorios
                 buscarId.Senha = usuario.Senha;
                 buscarId.Nome = usuario.Nome;
                 buscarId.Email = usuario.Email;
+
+                var nomeArquivo = AesOperation.gerarChave(20);
+
+                var imagem = usuario.Imagem;
+                if (imagem != "")
+                {
+                    byte[] bytes = Convert.FromBase64String(imagem);
+
+
+                    //  CancellationTokenSource can be used to cancel the upload midway
+                    var cancellation = new CancellationTokenSource();
+
+                    var storage = await FirebaseMethods.FirebaseStorageCustom(apiKey,AuthEmail,AuthPassword,Bucket);
+
+                    var firebaseAutProvider = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
+                    var firebaseAuthLink = await firebaseAutProvider.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+                    
+
+                    try
+                    {
+                        using (MemoryStream fileStream = new MemoryStream(bytes))
+                        {
+                            var task = new FirebaseStorage(
+                                Bucket,
+                                new FirebaseStorageOptions
+                                {
+                                    AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
+                                    ThrowOnCancel = true // when cancel the upload, exception is thrown. By default no exception is thrown
+                                })
+                              .Child("images")
+                              .Child(nomeArquivo)
+                              .PutAsync(fileStream, cancellation.Token);
+                            task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
+                            string imageAccessLink = await task;
+                            fileStream.Dispose();
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        throw new Exception("Erro ao salvar a imagem.");
+                    }
+                    
+                }
+
+                buscarId.Imagem = nomeArquivo;
 
                 _contexto.Usuarios.Update(buscarId);
                 await _contexto.SaveChangesAsync();
