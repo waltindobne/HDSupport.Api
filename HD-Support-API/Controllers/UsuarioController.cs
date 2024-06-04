@@ -166,6 +166,21 @@ namespace HD_Support_API.Controllers
             }
         }
         [HttpPost]
+        [Route("Alteracao-Email")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RedefinirEmail(string email, int id)
+        {
+            try
+            {
+                await _repositorio.RedefinirEmail(email, id);
+                return Ok("E-mail de confirmação de email enviado com sucesso.");
+            }
+            catch
+            {
+                return StatusCode(500, $"Ocorreu um erro ao enviar o e-mail de recuperação de senha");
+            }
+        }
+        [HttpPost]
         [Route("RedefinirSenha")]
         [AllowAnonymous]
         public async Task<IActionResult> RedefinirSenha(string token, string novaSenha,string confirmacaoSenha)
@@ -176,9 +191,9 @@ namespace HD_Support_API.Controllers
         [HttpPost]
         [Route("ConfirmarEmail")]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmarEmail(string token)
+        public async Task<IActionResult> ConfirmarEmail(string token, string email)
         {
-            return await _repositorio.ConfirmarEmail(token);
+            return await _repositorio.ConfirmarEmail(token, email);
         }
     }
 }

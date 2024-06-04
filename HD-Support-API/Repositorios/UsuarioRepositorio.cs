@@ -43,61 +43,7 @@ namespace HD_Support_API.Repositorios
                     var usuarioBancoComEmail = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email == usuario.Email);
                     if(usuarioBancoComEmail == null)
                     {
-                        string tokenRedefinicaoSenha = Guid.NewGuid().ToString();
-
-                        DateTime dataHoraGeracaoToken = DateTime.Now;
-                        string dataHoraGeracaoTokenString = dataHoraGeracaoToken.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        usuario.TokenRedefinicaoSenha = tokenRedefinicaoSenha;
-                        usuario.DataHoraGeracaoToken = dataHoraGeracaoTokenString;
-
-                        var texto = $@"
-                        <html>
-                            <head>
-                                <style>
-                                    body {{font - family: Arial, sans-serif;
-                                        border: 1px solid #000000;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        height: 100vh;
-                                        margin: 0;
-                                        padding: 0;
-                                        text-align: center;
-                                    }}
-                                    header {{width: 100%;
-                                        background-color: #1E90FF;
-                                        color: #F0F8FF;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                    }}
-                                    .container {{padding: 20px;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        flex-direction: column;
-                                    }}
-                                    .link {{color: blue;
-                                        text-decoration: none;
-                                    }}
-                                </style>
-                            </head>
-                            <body>
-                                <header>
-                                    <div>
-                                        <h1>Confirmação de email - HD-Support</h1>
-                                    </div>
-                                </header>
-                                <div class='container'>
-                                    <p>Olá,</p>
-                                    <p>Seu link de confirmação de email é: <a class='link' href='localhost:3000/recuperacao/{usuario.Id}?token={tokenRedefinicaoSenha}&geracaoToken={dataHoraGeracaoTokenString}'>Clique aqui</a>.</p>
-                                    <p>Não compartilhe seu link de redefinição, ele expirará dentro de 15 minutos.</p>
-                                    <p>Atenciosamente,<br>Equipe HD-Support</p>
-                                </div>
-                            </body>
-                            </html>";
-
-                        await _SendEmailRepository.SendEmailAsync(usuario.Email, "Confirmação de email HD-Support", texto);
+                        await RedefinirEmail(usuario.Email, usuario.Id);
 
                         var imageAccessLink = "";
 
@@ -179,76 +125,72 @@ namespace HD_Support_API.Repositorios
             {
                 throw new Exception("Endereço de e-mail inválido.");
             }
-            if (usuario.Email.Contains("@employer.com.br") || usuario.Email.Contains("@bne-empregos.com.br"))
+
+            buscarId.Nome = usuario.Nome;
+            buscarId.Telefone = usuario.Telefone;
+
+            var imagem = usuario.Imagem;
+            if (imagem != "")
             {
-                buscarId.Senha = AesOperation.CriarHash(usuario.Senha);
-                buscarId.Nome = usuario.Nome;
-                buscarId.Email = usuario.Email;
-
-                
-
-                var imagem = usuario.Imagem;
-                if (imagem != "")
+                byte[] bytes = Convert.FromBase64String(imagem);
+                Console.WriteLine(bytes.LongLength);
+                if(bytes.LongLength < 204800)
                 {
-                    byte[] bytes = Convert.FromBase64String(imagem);
-                    Console.WriteLine(bytes.LongLength);
-                    if(bytes.LongLength < 204800)
-                    {
 
-                        //  CancellationTokenSource can be used to cancel the upload midway
-                        var cancellation = new CancellationTokenSource();
+                    //  CancellationTokenSource can be used to cancel the upload midway
+                    var cancellation = new CancellationTokenSource();
 
-                        var storage = await FirebaseMethods.FirebaseStorageCustom(apiKey, AuthEmail, AuthPassword, Bucket);
+                    var storage = await FirebaseMethods.FirebaseStorageCustom(apiKey, AuthEmail, AuthPassword, Bucket);
 
-                        var nomeArquivo = buscarId.Imagem;
+                    var nomeArquivo = buscarId.Imagem;
 
-                        if(nomeArquivo != null) { 
-                            try
-                            {
-                                await storage.Child("images").Child(nomeArquivo).DeleteAsync();
-                            }
-                            catch (Exception e)
-                            {
-                                throw new Exception("Erro ao deletar a imagem.");
-                            }
-                        }
-
-                        var firebaseAutProvider = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
-                        var firebaseAuthLink = await firebaseAutProvider.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
-
-                        nomeArquivo = AesOperation.gerarChave(20);
-
+                    if(nomeArquivo != null) { 
                         try
                         {
-                            using (MemoryStream fileStream = new MemoryStream(bytes))
-                            {
-                                var task = new FirebaseStorage(
-                                    Bucket,
-                                    new FirebaseStorageOptions
-                                    {
-                                        AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
-                                        ThrowOnCancel = true // when cancel the upload, exception is thrown. By default no exception is thrown
-                                    })
-                                  .Child("images")
-                                  .Child(nomeArquivo)
-                                  .PutAsync(fileStream, cancellation.Token);
-                                task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
-                                string imageAccessLink = await task;
-                                fileStream.Dispose();
-                            }
+                            await storage.Child("images").Child(nomeArquivo).DeleteAsync();
                         }
                         catch (Exception e)
                         {
-                            throw new Exception("Erro ao salvar a imagem.");
+                            throw new Exception("Erro ao deletar a imagem.");
                         }
+                    }
 
-                        buscarId.Imagem = nomeArquivo;
-                    }
-                    else
+                    var firebaseAutProvider = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
+                    var firebaseAuthLink = await firebaseAutProvider.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+
+                    nomeArquivo = AesOperation.gerarChave(20);
+
+                    try
                     {
-                        throw new Exception("Imagem maior do que 200kb!");
+                        using (MemoryStream fileStream = new MemoryStream(bytes))
+                        {
+                            var task = new FirebaseStorage(
+                                Bucket,
+                                new FirebaseStorageOptions
+                                {
+                                    AuthTokenAsyncFactory = () => Task.FromResult(firebaseAuthLink.FirebaseToken),
+                                    ThrowOnCancel = true // when cancel the upload, exception is thrown. By default no exception is thrown
+                                })
+                                .Child("images")
+                                .Child(nomeArquivo)
+                                .PutAsync(fileStream, cancellation.Token);
+                            task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
+                            string imageAccessLink = await task;
+                            fileStream.Dispose();
+                        }
                     }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao salvar a imagem.");
+                    }
+
+                    buscarId.Imagem = nomeArquivo;
                 }
+                else
+                {
+                    throw new Exception("Imagem maior do que 200kb!");
+                }
+                
                 
 
                 _contexto.Usuarios.Update(buscarId);
@@ -455,9 +397,81 @@ namespace HD_Support_API.Repositorios
             return new OkResult();
         }
 
-        public async Task<IActionResult> ConfirmarEmail(string token)
+        public async Task<IActionResult> RedefinirEmail(string email, int id)
         {
+            var usuario = await BuscarUsuarioPorId(id);
 
+            string paternInvalidoEmail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            if (!Regex.IsMatch(email, paternInvalidoEmail))
+            {
+                throw new Exception("Endereço de e-mail inválido.");
+            }
+            if (email.Contains("@employer.com.br") || email.Contains("@bne-empregos.com.br"))
+            {
+                string tokenRedefinicaoSenha = Guid.NewGuid().ToString();
+
+                DateTime dataHoraGeracaoToken = DateTime.Now;
+                string dataHoraGeracaoTokenString = dataHoraGeracaoToken.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                usuario.TokenRedefinicaoSenha = tokenRedefinicaoSenha;
+                usuario.DataHoraGeracaoToken = dataHoraGeracaoTokenString;
+
+                var texto = $@"
+                        <html>
+                            <head>
+                                <style>
+                                    body {{font - family: Arial, sans-serif;
+                                        border: 1px solid #000000;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        height: 100vh;
+                                        margin: 0;
+                                        padding: 0;
+                                        text-align: center;
+                                    }}
+                                    header {{width: 100%;
+                                        background-color: #1E90FF;
+                                        color: #F0F8FF;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    }}
+                                    .container {{padding: 20px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        flex-direction: column;
+                                    }}
+                                    .link {{color: blue;
+                                        text-decoration: none;
+                                    }}
+                                </style>
+                            </head>
+                            <body>
+                                <header>
+                                    <div>
+                                        <h1>Confirmação de email - HD-Support</h1>
+                                    </div>
+                                </header>
+                                <div class='container'>
+                                    <p>Olá,</p>
+                                    <p>Seu link de confirmação de email é: <a class='link' href='localhost:3000/ConfirmarEmail?token={usuario.TokenRedefinicaoSenha}&email={email}'>Clique aqui</a>.</p>
+                                    <p>Não compartilhe seu link de redefinição, ele expirará dentro de 15 minutos.</p>
+                                    <p>Atenciosamente,<br>Equipe HD-Support</p>
+                                </div>
+                            </body>
+                            </html>";
+
+                await _SendEmailRepository.SendEmailAsync(email, "Confirmação de email HD-Support", texto);
+
+                return new OkResult();
+            }
+
+            return new BadRequestObjectResult("O Email precisa ser da Employer");
+        }
+
+        public async Task<IActionResult> ConfirmarEmail(string token, string email)
+        {
             var usuario = await BuscarUsuarioPorToken(token);
 
             if (usuario == null)
@@ -472,8 +486,14 @@ namespace HD_Support_API.Repositorios
 
             usuario.TokenRedefinicaoSenha = null;
 
+            if(usuario.Email != email && email != null)
+            {
+                usuario.Email = email;
+            }
+
             usuario.Status = StatusHelpDesk.Disponivel;
             _contexto.Usuarios.Update(usuario);
+
 
             await _contexto.SaveChangesAsync();
             return new OkResult();

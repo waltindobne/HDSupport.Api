@@ -24,6 +24,7 @@ namespace HD_Support_API.Repositorios.Interfaces
 
         Task<Usuarios> BuscarPorTokenJWT(string token);
         Task<IActionResult> RedefinirSenha(string token, string novaSenha, string confirmacaoSenha);
-        Task<IActionResult> ConfirmarEmail(string token);
+        Task <IActionResult> RedefinirEmail(string email, int id);
+        Task<IActionResult> ConfirmarEmail(string token, string email);
     }
 }
