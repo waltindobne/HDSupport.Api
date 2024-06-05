@@ -406,6 +406,11 @@ namespace HD_Support_API.Repositorios
             {
                 throw new Exception("Endereço de e-mail inválido.");
             }
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
+            if(busca!=null)
+            {
+                throw new Exception("Endereço de e-mail já cadastrado.");
+            }
             if (email.Contains("@employer.com.br") || email.Contains("@bne-empregos.com.br"))
             {
                 string tokenRedefinicaoSenha = Guid.NewGuid().ToString();
@@ -414,7 +419,6 @@ namespace HD_Support_API.Repositorios
                 string dataHoraGeracaoTokenString = dataHoraGeracaoToken.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 usuario.TokenRedefinicaoSenha = tokenRedefinicaoSenha;
                 usuario.DataHoraGeracaoToken = dataHoraGeracaoTokenString;
-
                 var texto = $@"
                         <html>
                             <head>
@@ -461,7 +465,7 @@ namespace HD_Support_API.Repositorios
                                 </div>
                             </body>
                             </html>";
-
+                Console.WriteLine(email);
                 await _SendEmailRepository.SendEmailAsync(email, "Confirmação de email HD-Support", texto);
 
                 return new OkResult();

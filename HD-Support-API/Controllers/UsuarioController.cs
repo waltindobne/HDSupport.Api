@@ -167,7 +167,7 @@ namespace HD_Support_API.Controllers
         }
         [HttpPost]
         [Route("Alteracao-Email")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Funcionario,Gerente,HelpDesk,RH")]
         public async Task<IActionResult> RedefinirEmail(string email, int id)
         {
             try
@@ -177,7 +177,7 @@ namespace HD_Support_API.Controllers
             }
             catch
             {
-                return StatusCode(500, $"Ocorreu um erro ao enviar o e-mail de recuperação de senha");
+                return StatusCode(500, $"Ocorreu um erro ao enviar o e-mail");
             }
         }
         [HttpPost]
