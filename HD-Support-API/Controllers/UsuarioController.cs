@@ -185,7 +185,15 @@ namespace HD_Support_API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RedefinirSenha(string token, string novaSenha,string confirmacaoSenha)
         {
-            return await _repositorio.RedefinirSenha(token, novaSenha,confirmacaoSenha);
+            try
+            {
+                await _repositorio.RedefinirSenha(token, novaSenha, confirmacaoSenha);
+                return Ok("Senha redefinida com sucesso!");
+            }
+            catch
+            {
+                return StatusCode(500, $"Ocorreu um erro ao redefinir a senha!");
+            }
         }
 
         [HttpPost]
@@ -193,7 +201,16 @@ namespace HD_Support_API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmarEmail(string token, string email)
         {
-            return await _repositorio.ConfirmarEmail(token, email);
+            try
+            {
+                await _repositorio.ConfirmarEmail(token, email);
+                return Ok("E-mail confirmado com sucesso!");
+            }
+            catch
+            {
+                return StatusCode(500, $"Erro ao confirmar o E-mail");
+            }
+            
         }
     }
 }

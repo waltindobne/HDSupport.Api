@@ -419,6 +419,7 @@ namespace HD_Support_API.Repositorios
                 string dataHoraGeracaoTokenString = dataHoraGeracaoToken.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 usuario.TokenRedefinicaoSenha = tokenRedefinicaoSenha;
                 usuario.DataHoraGeracaoToken = dataHoraGeracaoTokenString;
+                await _contexto.SaveChangesAsync();
                 var texto = $@"
                         <html>
                             <head>
