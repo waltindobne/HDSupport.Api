@@ -118,6 +118,7 @@ namespace HD_Support_API.Repositorios
             {
                 MensagensLista[i].Mensagem = AesOperation.Descriptar(criptografia, MensagensLista[i].Mensagem);
                 MensagensLista[i].Usuario = await _contexto.Usuarios.FindAsync(MensagensLista[i].UsuarioId);
+                MensagensLista[i].Data_envio = MensagensLista[i].Data_envio.AddHours(-3);
             }
             return MensagensLista;
         }

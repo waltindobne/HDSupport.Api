@@ -43,12 +43,11 @@ namespace HD_Support_API.Repositorios
                     var usuarioBancoComEmail = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email == usuario.Email);
                     if(usuarioBancoComEmail == null)
                     {
-                        await RedefinirEmail(usuario.Email, usuario.Id);
 
                         var imageAccessLink = "";
 
                         var imagem = usuario.Imagem;
-                        if (imagem != "")
+                        if (imagem != null)
                         {
                             byte[] bytes = Convert.FromBase64String(imagem);
 
@@ -77,11 +76,14 @@ namespace HD_Support_API.Repositorios
                         
 
                         usuario.Senha = AesOperation.CriarHash(usuario.Senha);
-
+                        var emailEnvio = usuario.Email;
+                        usuario.Email = "naoConfirmado";
                         usuario.Status = StatusHelpDesk.naoConfirmado;
                         usuario.Imagem = imageAccessLink;
                         await _contexto.Usuarios.AddAsync(usuario);
                         await _contexto.SaveChangesAsync();
+                        var idNovo = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Email == usuario.Email);
+                        await RedefinirEmail(emailEnvio, idNovo.Id);
                         return usuario;
                     }
                     else
