@@ -62,12 +62,17 @@ builder.Services.AddCors(options =>
         builder.WithOrigins("http://localhost:3000")
                .AllowAnyMethod()
                .AllowAnyHeader());
+
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+        builder.WithOrigins("https://hd-support-fmbn4sx3s-waltindobnes-projects.vercel.app/")
+               .AllowAnyMethod()
+               .AllowAnyHeader());
 });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Minha API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "HD Support", Version = "v1" });
 
     // Configuração da autenticação JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -99,7 +104,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Minha API v1");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "HD Support v1");
 });
 
 app.UseHttpsRedirection();

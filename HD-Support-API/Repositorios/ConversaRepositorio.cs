@@ -88,7 +88,7 @@ namespace HD_Support_API.Repositorios
                 funcionario.Status = StatusHelpDesk.Disponivel;
                 _contexto.Usuarios.Update(funcionario);
             }
-            conversaPorId.Data_conclusao = DateTime.Now.AddHours(-3);
+            conversaPorId.Data_conclusao = DateTime.UtcNow;
 
             _contexto.Conversa.Update(conversaPorId);
             await _contexto.SaveChangesAsync();
