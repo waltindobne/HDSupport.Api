@@ -187,6 +187,13 @@ namespace HD_Support_API.Repositorios
         {
             List<Conversa> ConversaLista = await _contexto.Conversa.Where(x => x.FuncionariosId == idUsuario || x.ClienteId == idUsuario).ToListAsync();
 
+            for (var i = 0; i < ConversaLista.Count(); i++)
+            {
+                ConversaLista[i].Cliente = await _contexto.Usuarios.FindAsync(ConversaLista[i].ClienteId);
+                if (ConversaLista[i].FuncionariosId != null)
+                    ConversaLista[i].Funcionarios = await _contexto.Usuarios.FindAsync(ConversaLista[i].FuncionariosId);
+            }
+
             return ConversaLista;
         }
 
