@@ -42,8 +42,7 @@ namespace HD_Support_API.Repositorios
             }
             if (conversa.FuncionariosId == null || conversa.FuncionariosId == conversa.ClienteId)
             {
-                Usuarios funcionario = new Usuarios { Id=-1,Nome="base",Email="base",Senha="base"};
-                conversa.Funcionarios = funcionario;
+                conversa.Funcionarios = cliente;
             }
             else
             {
