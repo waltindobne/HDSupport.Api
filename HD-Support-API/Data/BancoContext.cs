@@ -28,9 +28,6 @@ namespace HD_Support_API.Components
         //postgresql conexão
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql(
-                "Host=172.210.165.238;" +
-                "Port=5432;Database=default_db;" +
-                "User Id=escolinha;" +
-                "Password=escolinha@bne2024;");
+                "");
     }
 }
