@@ -21,10 +21,10 @@ namespace HD_Support_API.Repositorios
         private readonly BancoContext _contexto = new BancoContext();
         private readonly IEmailSender _SendEmailRepository;
 
-        private static string apiKey = "AIzaSyDYYelJzgqnPaAL6_be0l5UHQWVdu-DK_I";
-        private static string Bucket = "hd-support-c57ae.appspot.com";
-        private static string AuthEmail = "hdsupport_@gmail.com";
-        private static string AuthPassword = "hdsupport_";
+        private static string apiKey = "";
+        private static string Bucket = "";
+        private static string AuthEmail = "";
+        private static string AuthPassword = "";
 
         public UsuarioRepositorio(IEmailSender sendEmailRepository)
         {
