@@ -9,8 +9,8 @@ namespace HD_Support_API.Repositorios
     {
         public Task SendEmailAsync(string email, string subject, string mensagem)
         {
-            var mail = "hdsuport@hotmail.com";
-            var senha = "hdsupport@senha";
+            var mail = "";
+            var senha = "";
 
             var client = new SmtpClient("smtp-mail.outlook.com", 587)
             {
