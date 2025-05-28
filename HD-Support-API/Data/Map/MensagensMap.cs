@@ -8,14 +8,14 @@ namespace HD_Support_API.Data.Map
     {
         public void Configure(EntityTypeBuilder<Mensagens> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Mensagem).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.ConversaId).IsRequired();
-            builder.HasOne(x => x.Usuario)
+            builder.HasKey(x => x.id);
+            builder.Property(x => x.mensagem).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.conversaid).IsRequired();
+            builder.HasOne(x => x.usuario)
                .WithMany()
-               .HasForeignKey(x => x.UsuarioId)
+               .HasForeignKey(x => x.usuarioid)
                .IsRequired();
-            builder.Property(x => x.Data_envio).IsRequired();
+            builder.Property(x => x.data_envio).IsRequired();
         }
     }
 }

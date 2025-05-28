@@ -70,9 +70,9 @@ namespace HD_Support_API.Migrations
             migrationBuilder.AddForeignKey(
                 name: "FK_Conversa_Usuarios_ClienteId",
                 table: "Conversa",
-                column: "ClienteId",
+                column: "clienteid",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -80,22 +80,22 @@ namespace HD_Support_API.Migrations
                 table: "Conversa",
                 column: "FuncionarioId",
                 principalTable: "Usuarios",
-                principalColumn: "Id");
+                principalColumn: "id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Emprestimo_Usuarios_FuncionarioId",
                 table: "Emprestimo",
                 column: "FuncionarioId",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Mensagens_Usuarios_UsuarioId",
                 table: "Mensagens",
-                column: "UsuarioId",
+                column: "usuarioid",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -168,14 +168,14 @@ namespace HD_Support_API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Emprestimo_FuncionariosId",
                 table: "Emprestimo",
-                column: "FuncionariosId");
+                column: "funcionariosid");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Conversa_HelpDesk_ClienteId",
                 table: "Conversa",
-                column: "ClienteId",
+                column: "clienteid",
                 principalTable: "HelpDesk",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -183,22 +183,22 @@ namespace HD_Support_API.Migrations
                 table: "Conversa",
                 column: "FuncionarioId",
                 principalTable: "HelpDesk",
-                principalColumn: "Id");
+                principalColumn: "id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Emprestimo_Funcionario_FuncionariosId",
                 table: "Emprestimo",
-                column: "FuncionariosId",
+                column: "funcionariosid",
                 principalTable: "Funcionario",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Mensagens_HelpDesk_UsuarioId",
                 table: "Mensagens",
-                column: "UsuarioId",
+                column: "usuarioid",
                 principalTable: "HelpDesk",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
     }

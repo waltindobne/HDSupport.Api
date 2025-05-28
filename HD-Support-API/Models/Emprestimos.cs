@@ -1,15 +1,18 @@
-﻿namespace HD_Support_API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HD_Support_API.Models
 {
+    [Table("emprestimos")]
     public class Emprestimos
     {
-        public int Id { get; set; }
+        public int id { get; set; }
 
-        // Relacionamento com Funcionarios
-        public Usuarios? Usuario { get; set; }
-        public int UsuarioId { get; set; }
+        // Relacionamento com funcionarios
+        public Usuarios? usuario { get; set; }
+        public int usuarioid { get; set; }
 
-        // Relacionamento com Equipamentos
-        public Equipamentos? Equipamentos { get; set; }
-        public int EquipamentosId { get; set; }
+        // Relacionamento com equipamentos
+        public Equipamentos? equipamentos { get; set; }
+        public int equipamentosid { get; set; }
     }
 }

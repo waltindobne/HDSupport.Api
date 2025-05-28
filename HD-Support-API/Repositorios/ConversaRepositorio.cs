@@ -10,46 +10,46 @@ namespace HD_Support_API.Repositorios
 {
     public class ConversaRepositorio : IConversaRepositorio
     {
-        private readonly BancoContext _contexto = new BancoContext();
+        private readonly BancoContext _contexto;
         private readonly string cripto = "criptografiahdsuportcriptografia";
 
-        /*usando sql "normal"
         public ConversaRepositorio(BancoContext contexto)
         {
             _contexto = contexto;
-        }*/
+        }
+
         public async Task<Conversa> IniciarConversa(Conversa conversa)
         {
-            conversa.Criptografia = AesOperation.gerarChave(32);
-            conversa.Criptografia = AesOperation.Encriptar(cripto, conversa.Criptografia);
-            Usuarios cliente = await _contexto.Usuarios.FindAsync(conversa.ClienteId);
-            conversa.Cliente = cliente;
-            /*HelpDesk funcionario = await _contexto.HelpDesk.FindAsync(conversa.FuncionariosId);
+            conversa.criptografia = AesOperation.gerarChave(32);
+            conversa.criptografia = AesOperation.Encriptar(cripto, conversa.criptografia);
+            Usuarios cliente = await _contexto.Usuarios.FindAsync(conversa.clienteid);
+            conversa.cliente = cliente;
+            /*HelpDesk funcionario = await _contexto.HelpDesk.FindAsync(conversa.funcionariosid);
             //atualizando status do funcionário
-            if (conversa.TipoConversa != TipoConversa.Conversa) {
-                funcionario.Status = StatusHelpDesk.Ocupado;
+            if (conversa.tipoconversa != tipoconversa.Conversa) {
+                funcionario.status = StatusHelpDesk.Ocupado;
                 _contexto.HelpDesk.Update(funcionario);
             }
             conversa.Funcionario = funcionario;*/
-            conversa.TipoConversa = (TipoConversa)conversa.TipoConversa;
-            if (conversa.Status != null)
+            conversa.tipoconversa = (TipoConversa)conversa.tipoconversa;
+            if (conversa.status != null)
             {
-                conversa.Status = (StatusConversa)conversa.Status;
+                conversa.status = (StatusConversa)conversa.status;
             }
             else
             {
-                conversa.Status = StatusConversa.NaoAceito;
+                conversa.status = StatusConversa.NaoAceito;
             }
-            if (conversa.FuncionariosId == null || conversa.FuncionariosId == conversa.ClienteId)
+            if (conversa.funcionariosid == null || conversa.funcionariosid == conversa.clienteid)
             {
-                conversa.Funcionarios = cliente;
+                conversa.funcionarios = cliente;
             }
             else
             {
-                Usuarios funcionario = await _contexto.Usuarios.FindAsync(conversa.FuncionariosId);
-                conversa.Funcionarios = funcionario;
+                Usuarios funcionario = await _contexto.Usuarios.FindAsync(conversa.funcionariosid);
+                conversa.funcionarios = funcionario;
             }
-            conversa.Data_inicio = DateTime.UtcNow;
+            conversa.data_inicio = DateTime.UtcNow;
             await _contexto.Conversa.AddAsync(conversa);
             await _contexto.SaveChangesAsync();
             return conversa;
@@ -57,11 +57,11 @@ namespace HD_Support_API.Repositorios
         public async Task<Conversa> EnviarMensagem(int idConversa, Mensagens mensagem)
         {
             Conversa conversa = await BuscarConversaPorId(idConversa);
-            string criptografia = AesOperation.Descriptar(cripto, conversa.Criptografia);
-            mensagem.Mensagem = AesOperation.Encriptar(criptografia, mensagem.Mensagem);
-            mensagem.ConversaId = idConversa;
-            mensagem.Usuario = await _contexto.Usuarios.FindAsync(mensagem.UsuarioId);
-            mensagem.Data_envio = DateTime.UtcNow;
+            string criptografia = AesOperation.Descriptar(cripto, conversa.criptografia);
+            mensagem.mensagem = AesOperation.Encriptar(criptografia, mensagem.mensagem);
+            mensagem.conversaid = idConversa;
+            mensagem.usuario = await _contexto.Usuarios.FindAsync(mensagem.usuarioid);
+            mensagem.data_envio = DateTime.UtcNow;
             await _contexto.Mensagens.AddAsync(mensagem);
             await _contexto.SaveChangesAsync();
             return conversa;
@@ -78,16 +78,16 @@ namespace HD_Support_API.Repositorios
 
             if (conversaPorId == null)
             {
-                throw new Exception($"Conversa de Id:{id} não encontrado na base de dados.");
+                throw new Exception($"Conversa de id:{id} não encontrado na base de dados.");
             }
-            conversaPorId.Status = StatusConversa.Encerrado;
-            if(conversaPorId.TipoConversa != TipoConversa.Conversa)
+            conversaPorId.status = StatusConversa.Encerrado;
+            if(conversaPorId.tipoconversa != TipoConversa.Conversa)
             {
-                Usuarios funcionario = conversaPorId.Funcionarios;
-                funcionario.Status = StatusHelpDesk.Disponivel;
+                Usuarios funcionario = conversaPorId.funcionarios;
+                funcionario.status = StatusHelpDesk.Disponivel;
                 _contexto.Usuarios.Update(funcionario);
             }
-            conversaPorId.Data_conclusao = DateTime.UtcNow;
+            conversaPorId.data_conclusao = DateTime.UtcNow;
 
             _contexto.Conversa.Update(conversaPorId);
             await _contexto.SaveChangesAsync();
@@ -100,7 +100,7 @@ namespace HD_Support_API.Repositorios
 
             if (mensagem == null)
             {
-                throw new Exception($"Mensagem de Id:{id} não encontrado na base de dados.");
+                throw new Exception($"mensagem de id:{id} não encontrado na base de dados.");
             }
             _contexto.Mensagens.Remove(mensagem);
             await _contexto.SaveChangesAsync();
@@ -111,20 +111,20 @@ namespace HD_Support_API.Repositorios
         public async Task<List<Mensagens>> ListarMensagens(int id)
         {
             Conversa conversaPorId = await BuscarConversaPorId(id);
-            List<Mensagens> MensagensLista = await _contexto.Mensagens.Where(x => x.ConversaId == id).ToListAsync();
-            string criptografia = AesOperation.Descriptar(cripto, conversaPorId.Criptografia);
+            List<Mensagens> MensagensLista = await _contexto.Mensagens.Where(x => x.conversaid == id).ToListAsync();
+            string criptografia = AesOperation.Descriptar(cripto, conversaPorId.criptografia);
             for (int i = 0; i < MensagensLista.Count;i++)
             {
-                MensagensLista[i].Mensagem = AesOperation.Descriptar(criptografia, MensagensLista[i].Mensagem);
-                MensagensLista[i].Usuario = await _contexto.Usuarios.FindAsync(MensagensLista[i].UsuarioId);
-                MensagensLista[i].Data_envio = MensagensLista[i].Data_envio.AddHours(-3);
+                MensagensLista[i].mensagem = AesOperation.Descriptar(criptografia, MensagensLista[i].mensagem);
+                MensagensLista[i].usuario = await _contexto.Usuarios.FindAsync(MensagensLista[i].usuarioid);
+                MensagensLista[i].data_envio = MensagensLista[i].data_envio.AddHours(-3);
             }
             return MensagensLista;
         }
 
         public async Task<bool> VerificarMensagemNova(int idConversa, int qtdMensagensAtual)
         {
-            int qtdMensagens = _contexto.Mensagens.Where(x => x.ConversaId == idConversa).Count();
+            int qtdMensagens = _contexto.Mensagens.Where(x => x.conversaid == idConversa).Count();
             if(qtdMensagens > qtdMensagensAtual)
             {
                 return true;
@@ -138,20 +138,20 @@ namespace HD_Support_API.Repositorios
             Usuarios funcionario = await _contexto.Usuarios.FindAsync(idFuncionario);
             if (funcionario == null)
             {
-                throw new Exception($"Funcionário de Id:{idFuncionario} não encontrado na base de dados.");
+                throw new Exception($"Funcionário de id:{idFuncionario} não encontrado na base de dados.");
             }
             
             Conversa conversa = await BuscarConversaPorId(idConversa);
             if (conversa == null)
             {
-                throw new Exception($"Conversa de Id:{idConversa} não encontrado na base de dados.");
+                throw new Exception($"Conversa de id:{idConversa} não encontrado na base de dados.");
             }
 
-            conversa.Funcionarios = funcionario;
-            conversa.FuncionariosId = idFuncionario;
-            if(conversa.TipoConversa == TipoConversa.HelpDesk)
+            conversa.funcionarios = funcionario;
+            conversa.funcionariosid = idFuncionario;
+            if(conversa.tipoconversa == TipoConversa.HelpDesk)
             {
-                funcionario.Status = StatusHelpDesk.Ocupado;
+                funcionario.status = StatusHelpDesk.Ocupado;
             }
 
             _contexto.Usuarios.Update(funcionario);
@@ -166,17 +166,17 @@ namespace HD_Support_API.Repositorios
             List<Conversa> ConversaLista;
             if (!aceito)
             {
-                ConversaLista = await _contexto.Conversa.Where(x => x.TipoConversa == tipoConversa && x.Status == StatusConversa.NaoAceito).ToListAsync();
+                ConversaLista = await _contexto.Conversa.Where(x => x.tipoconversa == tipoConversa && x.status == StatusConversa.NaoAceito).ToListAsync();
             }
             else
             {
-                ConversaLista = await _contexto.Conversa.Where(x => x.TipoConversa == tipoConversa && x.Status != StatusConversa.NaoAceito).ToListAsync();
+                ConversaLista = await _contexto.Conversa.Where(x => x.tipoconversa == tipoConversa && x.status != StatusConversa.NaoAceito).ToListAsync();
             }
 
             for(var i = 0; i < ConversaLista.Count(); i++)
             {
-                ConversaLista[i].Cliente = await _contexto.Usuarios.FindAsync(ConversaLista[i].ClienteId);
-                ConversaLista[i].Funcionarios = await _contexto.Usuarios.FindAsync(ConversaLista[i].FuncionariosId);
+                ConversaLista[i].cliente = await _contexto.Usuarios.FindAsync(ConversaLista[i].clienteid);
+                ConversaLista[i].funcionarios = await _contexto.Usuarios.FindAsync(ConversaLista[i].funcionariosid);
             }
             
             return ConversaLista;
@@ -184,13 +184,13 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<Conversa>> ListarConversas(int idUsuario)
         {
-            List<Conversa> ConversaLista = await _contexto.Conversa.Where(x => x.FuncionariosId == idUsuario || x.ClienteId == idUsuario).ToListAsync();
+            List<Conversa> ConversaLista = await _contexto.Conversa.Where(x => x.funcionariosid == idUsuario || x.clienteid == idUsuario).ToListAsync();
 
             for (var i = 0; i < ConversaLista.Count(); i++)
             {
-                ConversaLista[i].Cliente = await _contexto.Usuarios.FindAsync(ConversaLista[i].ClienteId);
-                if (ConversaLista[i].FuncionariosId != null)
-                    ConversaLista[i].Funcionarios = await _contexto.Usuarios.FindAsync(ConversaLista[i].FuncionariosId);
+                ConversaLista[i].cliente = await _contexto.Usuarios.FindAsync(ConversaLista[i].clienteid);
+                if (ConversaLista[i].funcionariosid != null)
+                    ConversaLista[i].funcionarios = await _contexto.Usuarios.FindAsync(ConversaLista[i].funcionariosid);
             }
 
             return ConversaLista;
@@ -201,14 +201,14 @@ namespace HD_Support_API.Repositorios
             Conversa conversa = await BuscarConversaPorId(idConversa);
             if (conversa == null)
             {
-                throw new Exception($"Conversa de Id:{idConversa} não encontrado na base de dados.");
+                throw new Exception($"Conversa de id:{idConversa} não encontrado na base de dados.");
             }
             StatusConversa StatusCorrigido = (StatusConversa)status;
-            conversa.Status = StatusCorrigido;
-            if (StatusCorrigido == StatusConversa.EmAndamento && conversa.FuncionariosId != null)
+            conversa.status = StatusCorrigido;
+            if (StatusCorrigido == StatusConversa.EmAndamento && conversa.funcionariosid != null)
             {
-                Usuarios funcionario = await _contexto.Usuarios.FindAsync(conversa.FuncionariosId);
-                funcionario.Status = StatusHelpDesk.Disponivel;
+                Usuarios funcionario = await _contexto.Usuarios.FindAsync(conversa.funcionariosid);
+                funcionario.status = StatusHelpDesk.Disponivel;
                 _contexto.Usuarios.Update(funcionario);
             }
             _contexto.Conversa.Update(conversa);
@@ -219,9 +219,9 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<int>> DadosChamadosDashboard()
         {
-            var aberto = _contexto.Conversa.Where(x => x.Status == Enums.StatusConversa.NaoAceito && x.TipoConversa == TipoConversa.HelpDesk).Count();
-            var pendente = _contexto.Conversa.Where(x => x.Status == Enums.StatusConversa.EmAndamento && x.TipoConversa == TipoConversa.HelpDesk).Count();
-            var concluido = _contexto.Conversa.Where(x => x.Status == Enums.StatusConversa.Encerrado && x.TipoConversa == TipoConversa.HelpDesk).Count();
+            var aberto = _contexto.Conversa.Where(x => x.status == Enums.StatusConversa.NaoAceito && x.tipoconversa == TipoConversa.HelpDesk).Count();
+            var pendente = _contexto.Conversa.Where(x => x.status == Enums.StatusConversa.EmAndamento && x.tipoconversa == TipoConversa.HelpDesk).Count();
+            var concluido = _contexto.Conversa.Where(x => x.status == Enums.StatusConversa.Encerrado && x.tipoconversa == TipoConversa.HelpDesk).Count();
             List<int> dados = [aberto, pendente, concluido];
             return dados;
         }

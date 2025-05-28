@@ -22,38 +22,38 @@ namespace HD_Support_API.Migrations
 
             modelBuilder.Entity("HD_Support_API.Models.Conversa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ClienteId")
+                    b.Property<int>("clienteid")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Criptografia")
+                    b.Property<string>("criptografia")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("Data_conclusao")
+                    b.Property<DateTime?>("data_conclusao")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Data_inicio")
+                    b.Property<DateTime>("data_inicio")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("FuncionarioId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("FuncionariosId")
+                    b.Property<int?>("funcionariosid")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("TipoConversa")
+                    b.Property<int?>("tipoconversa")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("ClienteId");
+                    b.HasIndex("clienteid");
 
                     b.HasIndex("FuncionarioId");
 
@@ -62,44 +62,44 @@ namespace HD_Support_API.Migrations
 
             modelBuilder.Entity("HD_Support_API.Models.Emprestimos", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("EquipamentosId")
+                    b.Property<int>("equipamentosid")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("usuarioId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("EquipamentosId");
+                    b.HasIndex("equipamentosid");
 
                     b.HasIndex("usuarioId");
 
                     b.ToTable("Emprestimo");
                 });
 
-            modelBuilder.Entity("HD_Support_API.Models.Equipamentos", b =>
+            modelBuilder.Entity("HD_Support_API.Models.equipamentos", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DtEmeprestimoFinal")
+                    b.Property<DateTime>("dtemeprestimofinal")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DtEmeprestimoInicio")
+                    b.Property<DateTime>("dtemeprestimoinicio")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HeadSet")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("IdPatrimonio")
+                    b.Property<int?>("idpatrimonio")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Modelo")
+                    b.Property<string>("modelo")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Processador")
@@ -108,46 +108,46 @@ namespace HD_Support_API.Migrations
                     b.Property<string>("SistemaOperacional")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("profissional_HD")
+                    b.Property<string>("profissional_hd")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("statusEquipamento")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Equipamento");
                 });
 
             modelBuilder.Entity("HD_Support_API.Models.Mensagens", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ConversaId")
+                    b.Property<int>("conversaid")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("Data_envio")
+                    b.Property<DateTime>("data_envio")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Mensagem")
+                    b.Property<string>("mensagem")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UsuarioId")
+                    b.Property<int>("usuarioid")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("usuarioid");
 
                     b.ToTable("Mensagens");
                 });
 
             modelBuilder.Entity("HD_Support_API.Models.Usuarios", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -171,7 +171,7 @@ namespace HD_Support_API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Status")
+                    b.Property<int?>("status")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("StatusConversa")
@@ -185,16 +185,16 @@ namespace HD_Support_API.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("HD_Support_API.Models.Conversa", b =>
                 {
-                    b.HasOne("HD_Support_API.Models.Usuarios", "Cliente")
+                    b.HasOne("HD_Support_API.Models.Usuarios", "cliente")
                         .WithMany()
-                        .HasForeignKey("ClienteId")
+                        .HasForeignKey("clienteid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -202,16 +202,16 @@ namespace HD_Support_API.Migrations
                         .WithMany()
                         .HasForeignKey("FuncionarioId");
 
-                    b.Navigation("Cliente");
+                    b.Navigation("cliente");
 
                     b.Navigation("Funcionario");
                 });
 
             modelBuilder.Entity("HD_Support_API.Models.Emprestimos", b =>
                 {
-                    b.HasOne("HD_Support_API.Models.Equipamentos", "Equipamento")
+                    b.HasOne("HD_Support_API.Models.equipamentos", "Equipamento")
                         .WithMany()
-                        .HasForeignKey("EquipamentosId")
+                        .HasForeignKey("equipamentosid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -228,13 +228,13 @@ namespace HD_Support_API.Migrations
 
             modelBuilder.Entity("HD_Support_API.Models.Mensagens", b =>
                 {
-                    b.HasOne("HD_Support_API.Models.Usuarios", "Usuario")
+                    b.HasOne("HD_Support_API.Models.Usuarios", "usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("usuarioid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Usuario");
+                    b.Navigation("usuario");
                 });
 #pragma warning restore 612, 618
         }

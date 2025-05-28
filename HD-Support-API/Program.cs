@@ -13,7 +13,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicione serviÁos ao contÍiner.
+// Adicione servi√ßos ao cont√™iner.
 builder.Services.AddControllers();
 var key = Encoding.ASCII.GetBytes(ChaveSecretaJWT.Chave);
 builder.Services.AddAuthentication(x =>
@@ -34,9 +34,9 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
-//conex„o com sql
-//builder.Services.AddDbContext<BancoContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//conex√£o com sql
+builder.Services.AddDbContext<BancoContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddTransient<IEmailSender, EmailSenderRepositorio>();
@@ -56,25 +56,23 @@ builder.Services.AddScoped<IConversaRepositorio, ConversaRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 */
 // Suporte a CORS
+// Suporte a CORS (liberado para todos)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", builder =>
-        builder.WithOrigins("http://localhost:3000")
-               .AllowAnyMethod()
-               .AllowAnyHeader());
-
-    options.AddPolicy("AllowSpecificOrigin", builder =>
-        builder.WithOrigins("https://hd-support-fmbn4sx3s-waltindobnes-projects.vercel.app/")
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+    options.AddPolicy("AllowAll", builder =>
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "HD Support", Version = "v1" });
 
-    // ConfiguraÁ„o da autenticaÁ„o JWT
+    // Configura√ß√£o da autentica√ß√£o JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme.",
@@ -112,7 +110,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowAll");
 
 app.MapControllers();
 

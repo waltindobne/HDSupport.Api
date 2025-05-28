@@ -18,8 +18,8 @@ namespace HD_Support_API.Metodos
             {
                 Subject = new ClaimsIdentity(new Claim[] 
                 {
-                    new Claim(ClaimTypes.Name, usuario.Email),
-                    new Claim(ClaimTypes.Role, usuario.Cargo),
+                    new Claim(ClaimTypes.Name, usuario.email),
+                    new Claim(ClaimTypes.Role, usuario.cargo),
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),
                 SigningCredentials = new SigningCredentials(

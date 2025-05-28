@@ -3,20 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HD_Support_API.Models
 {
+    [Table("usuarios")]
     public class Usuarios
     {
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Email { get; set; }
+        public int id { get; set; }
+        public string nome { get; set; }
+        public string email { get; set; }
 
         [Column(TypeName = "nvarchar(MAX)")] 
-        public string Senha { get; set; }
-        public string Telefone { get; set; }
-        public string Cargo { get; set; }
-        public string? Imagem { get; set; }
-        public StatusHelpDesk? Status { get; set; }
-        public StatusHelpDeskConversa? StatusConversa { get; set; }
-        public string? TokenRedefinicaoSenha { get; set; }
-        public string? DataHoraGeracaoToken { get; set; }
+        public string senha { get; set; }
+        public string telefone { get; set; }
+        public string cargo { get; set; }
+        public string? imagem { get; set; }
+        public StatusHelpDesk? status { get; set; }
+        public StatusHelpDeskConversa? statusconversa { get; set; }
+        public string? tokenredefinicaosenha { get; set; }
+        public string? datahorageracaotoken { get; set; }
     }
 }

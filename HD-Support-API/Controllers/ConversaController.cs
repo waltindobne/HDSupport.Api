@@ -43,7 +43,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPost]
-        [Route("Registro-Mensagem")]
+        [Route("Registro-mensagem")]
         [Authorize(Roles = "Gerente,HelpDesk,RH,Funcionario")]
         public async Task<IActionResult> EnviarMensagem(int idConversa, [FromBody] Mensagens mensagem)
         {
@@ -58,7 +58,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpGet]
-        [Route("Buscar-Conversa-Por-Id/{id}")]
+        [Route("Buscar-Conversa-Por-id/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> BuscarConversaPorId(int id)
         {
@@ -88,7 +88,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPost]
-        [Route("Excluir-Mensagem/{id}")]
+        [Route("Excluir-mensagem/{id}")]
         [Authorize(Roles = "Gerente,HelpDesk,RH,Funcionario")]
         public async Task<IActionResult> ExcluirMensagem(int id)
         {
@@ -96,14 +96,14 @@ namespace HD_Support_API.Controllers
 
             if (Excluir == false)
             {
-                return NotFound($"Mensagem com ID:{id} não encontrado");
+                return NotFound($"mensagem com ID:{id} não encontrado");
             }
 
             return Ok(Excluir);
         }
 
         [HttpGet]
-        [Route("Verificar-Mensagem-Nova/{idConversa}")]
+        [Route("Verificar-mensagem-Nova/{idConversa}")]
         [AllowAnonymous]
         public async Task<IActionResult> VerificarMensagemNova(int idConversa, int qtdMensagensAtual)
         {
@@ -139,7 +139,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPut]
-        [Route("Atualizar-Status-Conversa/{idConversa}")]
+        [Route("Atualizar-status-Conversa/{idConversa}")]
         public async Task<IActionResult> AtualizarStatusConversa(int idConversa, int status)
         {
             var atualizado = await _repositorio.AtualizarStatusConversa(idConversa, status);

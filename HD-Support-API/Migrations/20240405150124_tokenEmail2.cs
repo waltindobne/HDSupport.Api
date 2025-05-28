@@ -17,7 +17,7 @@ namespace HD_Support_API.Migrations
             migrationBuilder.RenameColumn(
                 name: "usuarioId",
                 table: "Emprestimo",
-                newName: "UsuarioId");
+                newName: "usuarioid");
 
             migrationBuilder.RenameIndex(
                 name: "IX_Emprestimo_usuarioId",
@@ -27,9 +27,9 @@ namespace HD_Support_API.Migrations
             migrationBuilder.AddForeignKey(
                 name: "FK_Emprestimo_Usuarios_UsuarioId",
                 table: "Emprestimo",
-                column: "UsuarioId",
+                column: "usuarioid",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -41,7 +41,7 @@ namespace HD_Support_API.Migrations
                 table: "Emprestimo");
 
             migrationBuilder.RenameColumn(
-                name: "UsuarioId",
+                name: "usuarioid",
                 table: "Emprestimo",
                 newName: "usuarioId");
 
@@ -55,7 +55,7 @@ namespace HD_Support_API.Migrations
                 table: "Emprestimo",
                 column: "usuarioId",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
     }

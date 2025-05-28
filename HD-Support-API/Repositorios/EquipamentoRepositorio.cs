@@ -9,7 +9,12 @@ namespace HD_Support_API.Repositorios
 {
     public class EquipamentoRepositorio : IEquipamentosRepositorio
     {
-        private readonly BancoContext _contexto = new BancoContext();
+        private readonly BancoContext _contexto;
+
+        public EquipamentoRepositorio(BancoContext contexto)
+        {
+            _contexto = contexto;
+        }
 
         /*usando sql "normal"
         public EquipamentoRepositorio(BancoContext contexto)
@@ -18,52 +23,52 @@ namespace HD_Support_API.Repositorios
         }*/
         public async Task<Equipamentos> AdicionarEquipamento(Equipamentos equipamento)
         {
-            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == equipamento.IdPatrimonio);
+            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.idpatrimonio == equipamento.idpatrimonio);
             if(verificacao == null)
             {
                 Console.WriteLine(DateTime.UtcNow);
-                equipamento.DtEmeprestimoInicio = DateTime.UtcNow;
+                equipamento.dtemeprestimoinicio = DateTime.UtcNow;
                 await _contexto.Equipamento.AddAsync(equipamento);
                 _contexto.SaveChanges();
                 return equipamento;
             }
-            throw new Exception($"O patrimônio com Id:{equipamento.IdPatrimonio} já está cadastrado.");
+            throw new Exception($"O patrimônio com id:{equipamento.idpatrimonio} já está cadastrado.");
         }
 
         public async Task<Equipamentos> AtualizarEquipamento(Equipamentos equipamento, int id)
         {
             Equipamentos equipamentosPorId = await BuscarEquipamentosPorId(id);
-            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == equipamento.IdPatrimonio);
+            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.idpatrimonio == equipamento.idpatrimonio);
             if (equipamentosPorId == null)
             {
-                throw new Exception($"Equipamento de Id:{id} não encontrado na base de dados.");
+                throw new Exception($"Equipamento de id:{id} não encontrado na base de dados.");
             }
-            if(verificacao == null || verificacao.IdPatrimonio == equipamentosPorId.IdPatrimonio)
+            if(verificacao == null || verificacao.idpatrimonio == equipamentosPorId.idpatrimonio)
             {
-                equipamentosPorId.IdPatrimonio = equipamento.IdPatrimonio;
-                equipamentosPorId.Modelo = equipamento.Modelo;
-                equipamentosPorId.Detalhes = equipamento.Detalhes;
-                equipamentosPorId.StatusEquipamento = equipamento.StatusEquipamento;
-                equipamentosPorId.DtEmeprestimoInicio = equipamentosPorId.DtEmeprestimoInicio.ToUniversalTime();
+                equipamentosPorId.idpatrimonio = equipamento.idpatrimonio;
+                equipamentosPorId.modelo = equipamento.modelo;
+                equipamentosPorId.detalhes = equipamento.detalhes;
+                equipamentosPorId.statusequipamento = equipamento.statusequipamento;
+                equipamentosPorId.dtemeprestimoinicio = equipamentosPorId.dtemeprestimoinicio.ToUniversalTime();
 
-                Console.WriteLine(equipamentosPorId.DtEmeprestimoInicio.ToUniversalTime());
+                Console.WriteLine(equipamentosPorId.dtemeprestimoinicio.ToUniversalTime());
 
                 _contexto.Equipamento.Update(equipamentosPorId);
                 await _contexto.SaveChangesAsync();
 
                 return equipamentosPorId;
             }
-            throw new Exception($"Equipamento de Id:{id} já cadastrado na base de dados.");
+            throw new Exception($"Equipamento de id:{id} já cadastrado na base de dados.");
 
         }
 
         public async Task<Equipamentos> BuscarEquipamentos(string idPatrimonio)
         {
-            return  _contexto.Equipamento.FirstOrDefault(x => x.IdPatrimonio == idPatrimonio);
+            return  _contexto.Equipamento.FirstOrDefault(x => x.idpatrimonio == idPatrimonio);
         }        
         public async Task<Equipamentos> BuscarEquipamentosPorId(int id)
         {
-            var busca =  _contexto.Equipamento.FirstOrDefault(x => x.Id == id);
+            var busca =  _contexto.Equipamento.FirstOrDefault(x => x.id == id);
             if(busca == null)
             {
                 throw new Exception($"Equipamento com o ID {id} não encontrado");
@@ -77,12 +82,12 @@ namespace HD_Support_API.Repositorios
 
             if (busca == null)
             {
-                throw new Exception($"Equipamento de Id:{id} não encontrado na base de dados.");
+                throw new Exception($"Equipamento de id:{id} não encontrado na base de dados.");
             }
 
-            var idPatrimonio = Convert.ToInt16(busca.IdPatrimonio);
+            var idPatrimonio = Convert.ToInt16(busca.idpatrimonio);
 
-            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.EquipamentosId == idPatrimonio);
+            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.equipamentosid == idPatrimonio);
             if (emprestimo != null)
                 _contexto.Remove(emprestimo);
 
@@ -101,10 +106,10 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<int>> DadosEquipamentoPizza()
         {
-            var disponivel = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.Disponivel).Count();
-            var ocupado = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.Emprestado).Count();
-            var emreparo = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.EmConserto).Count();
-            var emconserto = _contexto.Equipamento.Where(x => x.StatusEquipamento == Enums.StatusEquipamento.Danificado).Count();
+            var disponivel = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.Disponivel).Count();
+            var ocupado = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.Emprestado).Count();
+            var emreparo = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.EmConserto).Count();
+            var emconserto = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.Danificado).Count();
             List<int> dados = [disponivel, ocupado, emreparo, emconserto];
             return dados;
         }
@@ -119,7 +124,7 @@ namespace HD_Support_API.Repositorios
                 var tipo = tipos[i];
                 for(int j = 1; j < 5; j++)
                 {
-                    var resultado = _contexto.Equipamento.Where(x => x.Tipo == tipo && x.StatusEquipamento == (StatusEquipamento)j).Count();
+                    var resultado = _contexto.Equipamento.Where(x => x.tipo == tipo && x.statusequipamento == (StatusEquipamento)j).Count();
                     equipamento.Add(resultado);
                 }
                 dados.Add(equipamento);

@@ -52,7 +52,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "Status",
+                name: "status",
                 table: "Usuarios",
                 type: "int",
                 nullable: true,
@@ -107,7 +107,7 @@ namespace HD_Support_API.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Usuarios",
                 type: "int",
                 nullable: false,
@@ -116,7 +116,7 @@ namespace HD_Support_API.Migrations
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<int>(
-                name: "UsuarioId",
+                name: "usuarioid",
                 table: "Mensagens",
                 type: "int",
                 nullable: false,
@@ -124,7 +124,7 @@ namespace HD_Support_API.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Mensagem",
+                name: "mensagem",
                 table: "Mensagens",
                 type: "nvarchar(255)",
                 maxLength: 255,
@@ -133,7 +133,7 @@ namespace HD_Support_API.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "Data_envio",
+                name: "data_envio",
                 table: "Mensagens",
                 type: "datetime2",
                 nullable: false,
@@ -141,7 +141,7 @@ namespace HD_Support_API.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<int>(
-                name: "ConversaId",
+                name: "conversaid",
                 table: "Mensagens",
                 type: "int",
                 nullable: false,
@@ -149,7 +149,7 @@ namespace HD_Support_API.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Mensagens",
                 type: "int",
                 nullable: false,
@@ -166,7 +166,7 @@ namespace HD_Support_API.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<string>(
-                name: "profissional_HD",
+                name: "profissional_hd",
                 table: "Equipamento",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -198,7 +198,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Modelo",
+                name: "modelo",
                 table: "Equipamento",
                 type: "nvarchar(255)",
                 maxLength: 255,
@@ -209,7 +209,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "IdPatrimonio",
+                name: "idpatrimonio",
                 table: "Equipamento",
                 type: "int",
                 maxLength: 255,
@@ -230,7 +230,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "DtEmeprestimoInicio",
+                name: "dtemeprestimoinicio",
                 table: "Equipamento",
                 type: "datetime2",
                 nullable: false,
@@ -238,7 +238,7 @@ namespace HD_Support_API.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "DtEmeprestimoFinal",
+                name: "dtemeprestimofinal",
                 table: "Equipamento",
                 type: "datetime2",
                 nullable: false,
@@ -246,7 +246,7 @@ namespace HD_Support_API.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Equipamento",
                 type: "int",
                 nullable: false,
@@ -255,7 +255,7 @@ namespace HD_Support_API.Migrations
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<int>(
-                name: "UsuarioId",
+                name: "usuarioid",
                 table: "Emprestimo",
                 type: "int",
                 nullable: false,
@@ -263,7 +263,7 @@ namespace HD_Support_API.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<int>(
-                name: "EquipamentosId",
+                name: "equipamentosid",
                 table: "Emprestimo",
                 type: "int",
                 nullable: false,
@@ -271,7 +271,7 @@ namespace HD_Support_API.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Emprestimo",
                 type: "int",
                 nullable: false,
@@ -280,7 +280,7 @@ namespace HD_Support_API.Migrations
                 .Annotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<int>(
-                name: "TipoConversa",
+                name: "tipoconversa",
                 table: "Conversa",
                 type: "int",
                 nullable: true,
@@ -289,7 +289,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "Status",
+                name: "status",
                 table: "Conversa",
                 type: "int",
                 nullable: false,
@@ -297,7 +297,7 @@ namespace HD_Support_API.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<int>(
-                name: "FuncionariosId",
+                name: "funcionariosid",
                 table: "Conversa",
                 type: "int",
                 nullable: false,
@@ -307,7 +307,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "Data_inicio",
+                name: "data_inicio",
                 table: "Conversa",
                 type: "datetime2",
                 nullable: false,
@@ -315,7 +315,7 @@ namespace HD_Support_API.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "Data_conclusao",
+                name: "data_conclusao",
                 table: "Conversa",
                 type: "datetime2",
                 nullable: true,
@@ -324,7 +324,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Criptografia",
+                name: "criptografia",
                 table: "Conversa",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -332,7 +332,7 @@ namespace HD_Support_API.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<int>(
-                name: "ClienteId",
+                name: "clienteid",
                 table: "Conversa",
                 type: "int",
                 nullable: false,
@@ -340,7 +340,7 @@ namespace HD_Support_API.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Conversa",
                 type: "int",
                 nullable: false,
@@ -351,14 +351,14 @@ namespace HD_Support_API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Conversa_FuncionariosId",
                 table: "Conversa",
-                column: "FuncionariosId");
+                column: "funcionariosid");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Conversa_Usuarios_FuncionariosId",
                 table: "Conversa",
-                column: "FuncionariosId",
+                column: "funcionariosid",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -402,7 +402,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "Status",
+                name: "status",
                 table: "Usuarios",
                 type: "INTEGER",
                 nullable: true,
@@ -457,7 +457,7 @@ namespace HD_Support_API.Migrations
                 oldMaxLength: 255);
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Usuarios",
                 type: "INTEGER",
                 nullable: false,
@@ -466,7 +466,7 @@ namespace HD_Support_API.Migrations
                 .OldAnnotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<int>(
-                name: "UsuarioId",
+                name: "usuarioid",
                 table: "Mensagens",
                 type: "INTEGER",
                 nullable: false,
@@ -474,7 +474,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Mensagem",
+                name: "mensagem",
                 table: "Mensagens",
                 type: "TEXT",
                 nullable: false,
@@ -483,7 +483,7 @@ namespace HD_Support_API.Migrations
                 oldMaxLength: 255);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Data_envio",
+                name: "data_envio",
                 table: "Mensagens",
                 type: "TEXT",
                 nullable: false,
@@ -491,7 +491,7 @@ namespace HD_Support_API.Migrations
                 oldType: "datetime2");
 
             migrationBuilder.AlterColumn<int>(
-                name: "ConversaId",
+                name: "conversaid",
                 table: "Mensagens",
                 type: "INTEGER",
                 nullable: false,
@@ -499,7 +499,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Mensagens",
                 type: "INTEGER",
                 nullable: false,
@@ -516,7 +516,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<string>(
-                name: "profissional_HD",
+                name: "profissional_hd",
                 table: "Equipamento",
                 type: "TEXT",
                 nullable: true,
@@ -542,7 +542,7 @@ namespace HD_Support_API.Migrations
                 oldMaxLength: 255);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Modelo",
+                name: "modelo",
                 table: "Equipamento",
                 type: "TEXT",
                 nullable: true,
@@ -551,7 +551,7 @@ namespace HD_Support_API.Migrations
                 oldMaxLength: 255);
 
             migrationBuilder.AlterColumn<int>(
-                name: "IdPatrimonio",
+                name: "idpatrimonio",
                 table: "Equipamento",
                 type: "INTEGER",
                 nullable: true,
@@ -570,7 +570,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "DtEmeprestimoInicio",
+                name: "dtemeprestimoinicio",
                 table: "Equipamento",
                 type: "TEXT",
                 nullable: false,
@@ -578,7 +578,7 @@ namespace HD_Support_API.Migrations
                 oldType: "datetime2");
 
             migrationBuilder.AlterColumn<string>(
-                name: "DtEmeprestimoFinal",
+                name: "dtemeprestimofinal",
                 table: "Equipamento",
                 type: "TEXT",
                 nullable: false,
@@ -586,7 +586,7 @@ namespace HD_Support_API.Migrations
                 oldType: "datetime2");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Equipamento",
                 type: "INTEGER",
                 nullable: false,
@@ -595,7 +595,7 @@ namespace HD_Support_API.Migrations
                 .OldAnnotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<int>(
-                name: "UsuarioId",
+                name: "usuarioid",
                 table: "Emprestimo",
                 type: "INTEGER",
                 nullable: false,
@@ -603,7 +603,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<int>(
-                name: "EquipamentosId",
+                name: "equipamentosid",
                 table: "Emprestimo",
                 type: "INTEGER",
                 nullable: false,
@@ -611,7 +611,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Emprestimo",
                 type: "INTEGER",
                 nullable: false,
@@ -620,7 +620,7 @@ namespace HD_Support_API.Migrations
                 .OldAnnotation("SqlServer:Identity", "1, 1");
 
             migrationBuilder.AlterColumn<int>(
-                name: "TipoConversa",
+                name: "tipoconversa",
                 table: "Conversa",
                 type: "INTEGER",
                 nullable: true,
@@ -629,7 +629,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "Status",
+                name: "status",
                 table: "Conversa",
                 type: "INTEGER",
                 nullable: false,
@@ -637,7 +637,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<int>(
-                name: "FuncionariosId",
+                name: "funcionariosid",
                 table: "Conversa",
                 type: "INTEGER",
                 nullable: true,
@@ -645,7 +645,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Data_inicio",
+                name: "data_inicio",
                 table: "Conversa",
                 type: "TEXT",
                 nullable: false,
@@ -653,7 +653,7 @@ namespace HD_Support_API.Migrations
                 oldType: "datetime2");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Data_conclusao",
+                name: "data_conclusao",
                 table: "Conversa",
                 type: "TEXT",
                 nullable: true,
@@ -662,7 +662,7 @@ namespace HD_Support_API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Criptografia",
+                name: "criptografia",
                 table: "Conversa",
                 type: "TEXT",
                 nullable: false,
@@ -670,7 +670,7 @@ namespace HD_Support_API.Migrations
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<int>(
-                name: "ClienteId",
+                name: "clienteid",
                 table: "Conversa",
                 type: "INTEGER",
                 nullable: false,
@@ -678,7 +678,7 @@ namespace HD_Support_API.Migrations
                 oldType: "int");
 
             migrationBuilder.AlterColumn<int>(
-                name: "Id",
+                name: "id",
                 table: "Conversa",
                 type: "INTEGER",
                 nullable: false,
@@ -702,7 +702,7 @@ namespace HD_Support_API.Migrations
                 table: "Conversa",
                 column: "FuncionarioId",
                 principalTable: "Usuarios",
-                principalColumn: "Id");
+                principalColumn: "id");
         }
     }
 }

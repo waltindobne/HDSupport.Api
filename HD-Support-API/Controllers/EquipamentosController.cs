@@ -18,7 +18,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpGet]
-        [Route("Lista-Equipamentos")]
+        [Route("Lista-equipamentos")]
         [Authorize(Roles = "Gerente,HelpDesk,RH")]
         public async Task<IActionResult> ListarEquipamentos()
         {
@@ -27,7 +27,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPost]
-        [Route("Registro-Equipamentos")]
+        [Route("Registro-equipamentos")]
         [Authorize(Roles = "Gerente,HelpDesk")]
         public async Task<IActionResult> AdicionarEquipamentos([FromBody] Equipamentos equipamentos)
         {

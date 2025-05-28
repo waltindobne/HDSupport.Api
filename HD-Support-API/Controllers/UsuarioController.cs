@@ -39,7 +39,7 @@ namespace HD_Support_API.Controllers
             return Ok(ListaHelpDesk);
         }
         [HttpGet]
-        [Route("Lista-Funcionarios")]
+        [Route("Lista-funcionarios")]
         [Authorize(Roles = "Gerente,HelpDesk,RH")]
         public async Task<IActionResult> ListarFuncionarios()
         {
@@ -63,7 +63,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPut]
-        [Route("Editar-Usuario/{id}")]
+        [Route("Editar-usuario/{id}")]
         [Authorize(Roles = "Gerente,HelpDesk,RH")]
         public async Task<IActionResult> AtualizarUsuario(int id, [FromBody] Usuarios usuario)
         {
@@ -77,7 +77,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpGet]
-        [Route("Buscar-Usuario-Por-ID/{id}")]
+        [Route("Buscar-usuario-Por-ID/{id}")]
         [Authorize(Roles = "Gerente,HelpDesk,RH")]
         public async Task<IActionResult> BuscarUsuarioPorID(int id)
         {
@@ -92,7 +92,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPost]
-        [Route("Excluir-Usuario/{id}")]
+        [Route("Excluir-usuario/{id}")]
         [Authorize(Roles = "Gerente,HelpDesk,RH")]
         public async Task<IActionResult> ExcluirUsuario(int id)
         {
@@ -141,7 +141,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPut]
-        [Route("Atualizar-Status-Usuario/{id}")]
+        [Route("Atualizar-status-usuario/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> AtualizarStatusHelpDesk(int id, int status)
         {

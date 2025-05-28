@@ -56,7 +56,7 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpGet]
-        [Route("Buscar-Emprestimo-Por-Id/{id}")]
+        [Route("Buscar-Emprestimo-Por-id/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> BuscarEmprestimosPorID(int id)
         {

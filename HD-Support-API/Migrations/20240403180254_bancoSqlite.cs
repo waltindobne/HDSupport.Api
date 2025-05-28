@@ -85,13 +85,13 @@ namespace HD_Support_API.Migrations
                         name: "FK_Emprestimo_Equipamento_EquipamentosId",
                         column: x => x.EquipamentosId,
                         principalTable: "Equipamento",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Emprestimo_Funcionario_FuncionariosId",
                         column: x => x.FuncionariosId,
                         principalTable: "Funcionario",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -117,13 +117,13 @@ namespace HD_Support_API.Migrations
                         name: "FK_Conversa_HelpDesk_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "HelpDesk",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Conversa_HelpDesk_FuncionarioId",
                         column: x => x.FuncionarioId,
                         principalTable: "HelpDesk",
-                        principalColumn: "Id");
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -144,14 +144,14 @@ namespace HD_Support_API.Migrations
                         name: "FK_Mensagens_HelpDesk_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "HelpDesk",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Conversa_ClienteId",
                 table: "Conversa",
-                column: "ClienteId");
+                column: "clienteid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Conversa_FuncionarioId",
@@ -161,17 +161,17 @@ namespace HD_Support_API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Emprestimo_EquipamentosId",
                 table: "Emprestimo",
-                column: "EquipamentosId");
+                column: "equipamentosid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Emprestimo_FuncionariosId",
                 table: "Emprestimo",
-                column: "FuncionariosId");
+                column: "funcionariosid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Mensagens_UsuarioId",
                 table: "Mensagens",
-                column: "UsuarioId");
+                column: "usuarioid");
         }
 
         /// <inheritdoc />

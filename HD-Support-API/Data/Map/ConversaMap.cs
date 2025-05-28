@@ -9,19 +9,19 @@ namespace HD_Support_API.Data.Map
         public void Configure(EntityTypeBuilder<Conversa> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.HasOne(x => x.Funcionarios)
+            builder.HasOne(x => x.funcionarios)
                    .WithMany()
-                   .HasForeignKey(x => x.FuncionariosId)
+                   .HasForeignKey(x => x.funcionariosid)
                    .IsRequired();
 
-            builder.HasOne(x => x.Cliente)
+            builder.HasOne(x => x.cliente)
                    .WithMany()
-                   .HasForeignKey(x => x.ClienteId)
+                   .HasForeignKey(x => x.clienteid)
                    .IsRequired();
-            builder.Property(x => x.Criptografia).IsRequired();
-            builder.Property(x => x.Status).IsRequired();
-            builder.Property(x => x.Data_inicio).IsRequired();
-            builder.Property(x => x.Data_conclusao);
+            builder.Property(x => x.criptografia).IsRequired();
+            builder.Property(x => x.status).IsRequired();
+            builder.Property(x => x.data_inicio).IsRequired();
+            builder.Property(x => x.data_conclusao);
         }
     }
 }

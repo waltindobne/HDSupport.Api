@@ -11,7 +11,7 @@ namespace HD_Support_API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "profissional_HD",
+                name: "profissional_hd",
                 table: "Equipamento",
                 type: "nvarchar(max)",
                 nullable: true,
@@ -23,7 +23,7 @@ namespace HD_Support_API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "profissional_HD",
+                name: "profissional_hd",
                 table: "Equipamento",
                 type: "nvarchar(max)",
                 nullable: false,

@@ -23,11 +23,11 @@ namespace HD_Support_API.Migrations
                 table: "Emprestimo");
 
             migrationBuilder.DropColumn(
-                name: "profissional_HD",
+                name: "profissional_hd",
                 table: "Emprestimo");
 
             migrationBuilder.RenameColumn(
-                name: "FuncionariosId",
+                name: "funcionariosid",
                 table: "Emprestimo",
                 newName: "usuarioId");
 
@@ -55,7 +55,7 @@ namespace HD_Support_API.Migrations
                 table: "Emprestimo",
                 column: "usuarioId",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -81,7 +81,7 @@ namespace HD_Support_API.Migrations
             migrationBuilder.RenameColumn(
                 name: "usuarioId",
                 table: "Emprestimo",
-                newName: "FuncionariosId");
+                newName: "funcionariosid");
 
             migrationBuilder.AddColumn<int>(
                 name: "FuncionarioId",
@@ -91,7 +91,7 @@ namespace HD_Support_API.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<string>(
-                name: "profissional_HD",
+                name: "profissional_hd",
                 table: "Emprestimo",
                 type: "TEXT",
                 nullable: true);
@@ -106,7 +106,7 @@ namespace HD_Support_API.Migrations
                 table: "Emprestimo",
                 column: "FuncionarioId",
                 principalTable: "Usuarios",
-                principalColumn: "Id",
+                principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
     }
