@@ -10,15 +10,15 @@ namespace HD_Support_API.Models
 
         // Relacionamento com funcionarios empresa
         public Usuarios? funcionarios { get; set; }
-        public int? funcionariosid { get; set; }
+        public int? Idf_Funcionario { get; set; }
 
         // Relacionamento com clientes
         public Usuarios cliente { get; set; }
-        public int clienteid { get; set; }
-        public TipoConversa? tipoconversa { get; set; }
-        public string criptografia { get; set; }
-        public StatusConversa status {  get; set; }
-        public DateTime data_inicio {  get; set; }
-        public DateTime? data_conclusao { get; set; }
+        public int Idf_Cliente { get; set; }
+        public TipoConversa? Tipo_Conversa { get; set; }
+        public string Criptografia_Conversa { get; set; }
+        public StatusConversa Stt_Conversa {  get; set; }
+        public DateTime Dta_Inicio_Conversa {  get; set; }
+        public DateTime? Dta_Conclusao_Conversa { get; set; }
     }
 }

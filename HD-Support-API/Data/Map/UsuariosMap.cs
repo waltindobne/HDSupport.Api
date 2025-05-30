@@ -8,14 +8,14 @@ namespace HD_Support_API.Data.Map
     {
         public void Configure(EntityTypeBuilder<Usuarios> builder)
         {
-            builder.HasKey(x => x.id);
-            builder.Property(x => x.nome).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.email).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.senha).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.telefone).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.cargo).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.tokenredefinicaosenha).HasMaxLength(255);
-            builder.Property(x => x.datahorageracaotoken).HasMaxLength(255);
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Nme_Usuario).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Eml_Usuario).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Sen_Usuario).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Tel_Usuario).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Cargo_Usuario).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Token_Redefinicao_Senha).HasMaxLength(255);
+            builder.Property(x => x.Dta_Token).HasMaxLength(255);
         }
     }
 }
