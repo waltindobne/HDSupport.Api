@@ -26,6 +26,60 @@ namespace HD_Support_API.Controllers
             var listaMensagens = await _repositorio.ListarMensagens(idConversa);
             return Ok(listaMensagens);
         }
+        [HttpGet]
+        [Route("Verificar-mensagem-Nova/{idConversa}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> VerificarMensagemNova(int idConversa, int qtdMensagensAtual)
+        {
+            var TemMensagemNova = await _repositorio.VerificarMensagemNova(idConversa, qtdMensagensAtual);
+            return Ok(TemMensagemNova);
+        }
+        [HttpGet]
+        [Route("Buscar-Conversa-Por-id/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> BuscarConversaPorId(int id)
+        {
+            var busca = await _repositorio.BuscarConversaPorId(id);
+
+            if (busca == null)
+            {
+                return NotFound($"Conversa com ID:{id} não encontrado");
+            }
+
+            return Ok(busca);
+        }
+        [HttpGet]
+        [Route("Listar-Chamados")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> ListarChamados(int tipo, bool aceito = false)
+        {
+            var Chamados = await _repositorio.ListarChamados(tipo, aceito);
+            return Ok(Chamados);
+        }
+
+        [HttpGet]
+        [Route("Listar-Conversas/{idUsuario}")]
+        [Authorize(Roles = "Gerente,HelpDesk,RH,Funcionario")]
+        public async Task<IActionResult> ListarConversas(int idUsuario)
+        {
+            var Conversas = await _repositorio.ListarConversas(idUsuario);
+            return Ok(Conversas);
+        }
+
+        [HttpGet]
+        [Route("Dados-Chamados-Dashboard")]
+        [Authorize(Roles = "Gerente,HelpDesk,RH")]
+        public async Task<IActionResult> DadosChamadosDashboard()
+        {
+            var dados = await _repositorio.DadosChamadosDashboard();
+
+            if (dados != null)
+            {
+                return Ok(dados);
+            }
+
+            return BadRequest("Erro ao procurar os dados no banco de dados");
+        }
 
         [HttpPost]
         [Route("Registro-Conversa")]
@@ -57,35 +111,9 @@ namespace HD_Support_API.Controllers
             return Ok(mensagemAdicionada);
         }
 
-        [HttpGet]
-        [Route("Buscar-Conversa-Por-id/{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> BuscarConversaPorId(int id)
-        {
-            var busca = await _repositorio.BuscarConversaPorId(id);
+        
 
-            if (busca == null)
-            {
-                return NotFound($"Conversa com ID:{id} não encontrado");
-            }
-
-            return Ok(busca);
-        }
-
-        [HttpPut]
-        [Route("Terminar-Conversa/{id}")]
-        [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> TerminarConversa(int id)
-        {
-            var Terminar = await _repositorio.BuscarConversaPorId(id);
-            if (Terminar == null)
-            {
-                return BadRequest($"Cadastro com ID:{id} não encontrado");
-            }
-
-            var atualizarConversa = await _repositorio.TerminarConversa(id);
-            return Ok(atualizarConversa);
-        }
+        
 
         [HttpPost]
         [Route("Excluir-mensagem/{id}")]
@@ -102,14 +130,7 @@ namespace HD_Support_API.Controllers
             return Ok(Excluir);
         }
 
-        [HttpGet]
-        [Route("Verificar-mensagem-Nova/{idConversa}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> VerificarMensagemNova(int idConversa, int qtdMensagensAtual)
-        {
-            var TemMensagemNova = await _repositorio.VerificarMensagemNova(idConversa, qtdMensagensAtual);
-            return Ok(TemMensagemNova);
-        }
+        
 
         [HttpPost]
         [Route("Aceitar-Chamado/{idConversa}-{idFuncionario}")]
@@ -119,24 +140,22 @@ namespace HD_Support_API.Controllers
             var ChamadoAceito = await _repositorio.AceitarChamado(idConversa, idFuncionario);
             return Ok(ChamadoAceito);
         }
-
-        [HttpGet]
-        [Route("Listar-Chamados")]
+        [HttpPut]
+        [Route("Terminar-Conversa/{id}")]
         [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> ListarChamados(int tipo, bool aceito = false)
+        public async Task<IActionResult> TerminarConversa(int id)
         {
-            var Chamados = await _repositorio.ListarChamados(tipo, aceito);
-            return Ok(Chamados);
+            var Terminar = await _repositorio.BuscarConversaPorId(id);
+            if (Terminar == null)
+            {
+                return BadRequest($"Cadastro com ID:{id} não encontrado");
+            }
+
+            var atualizarConversa = await _repositorio.TerminarConversa(id);
+            return Ok(atualizarConversa);
         }
 
-        [HttpGet]
-        [Route("Listar-Conversas/{idUsuario}")]
-        [Authorize(Roles = "Gerente,HelpDesk,RH,Funcionario")]
-        public async Task<IActionResult> ListarConversas(int idUsuario)
-        {
-            var Conversas = await _repositorio.ListarConversas(idUsuario);
-            return Ok(Conversas);
-        }
+
 
         [HttpPut]
         [Route("Atualizar-status-Conversa/{idConversa}")]
@@ -146,20 +165,6 @@ namespace HD_Support_API.Controllers
             return Ok(atualizado);
         }
 
-        [HttpGet]
-        [Route("Dados-Chamados-Dashboard")]
-        [Authorize(Roles = "Gerente,HelpDesk,RH")]
-        public async Task<IActionResult> DadosChamadosDashboard()
-        {
-            var dados = await _repositorio.DadosChamadosDashboard();
-
-            if (dados != null)
-            {
-                return Ok(dados);
-            }
-
-            return BadRequest("Erro ao procurar os dados no banco de dados");
-        }
     }
 }
 

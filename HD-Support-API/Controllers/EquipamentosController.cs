@@ -25,36 +25,6 @@ namespace HD_Support_API.Controllers
             var ListaHelpDesk = await _repositorio.ListarEquipamentos();
             return Ok(ListaHelpDesk);
         }
-
-        [HttpPost]
-        [Route("Registro-equipamentos")]
-        [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> AdicionarEquipamentos([FromBody] Equipamentos equipamentos)
-        {
-            if (equipamentos == null)
-            {
-                return BadRequest("Dados da maquina não fornecidos corretamente");
-            }
-
-            var equipamentoAdicionado = await _repositorio.AdicionarEquipamento(equipamentos);
-
-            return Ok(equipamentoAdicionado);
-        }
-
-        [HttpPut]
-        [Route("Editar-Maquina/{id}")]
-        [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> AtualizarMaquina(int id, [FromBody] Equipamentos equipamentos)
-        {
-            if (equipamentos == null)
-            {
-                return BadRequest($"Maquina não encontrada");
-            }
-
-            var atualizarEquipamento = await _repositorio.AtualizarEquipamento(equipamentos, id);
-            return Ok(atualizarEquipamento);
-        }
-
         [HttpGet]
         [Route("Buscar-Equipamento-Por-ID/{id}")]
         [AllowAnonymous]
@@ -69,22 +39,6 @@ namespace HD_Support_API.Controllers
 
             return Ok(busca);
         }
-
-        [HttpPost]
-        [Route("Excluir-Maquina/{id}")]
-        [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> ExcluirEquipamento(int id)
-        {
-            var excluirMaquina = await _repositorio.ExcluirEquipamento(id);
-
-            if (excluirMaquina)
-            {
-                return Ok(excluirMaquina);
-            }
-
-            return BadRequest("Erro ao excluir o equipamento.");
-        }
-
         [HttpGet]
         [Route("Dados-Equipamento-Pizza")]
         [Authorize(Roles = "Gerente,HelpDesk,RH")]
@@ -113,6 +67,50 @@ namespace HD_Support_API.Controllers
             }
 
             return BadRequest("Erro ao procurar os dados no banco de dados");
+        }
+
+        [HttpPost]
+        [Route("Registro-equipamentos")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> AdicionarEquipamentos([FromBody] Equipamentos equipamentos)
+        {
+            if (equipamentos == null)
+            {
+                return BadRequest("Dados da maquina não fornecidos corretamente");
+            }
+
+            var equipamentoAdicionado = await _repositorio.AdicionarEquipamento(equipamentos);
+
+            return Ok(equipamentoAdicionado);
+        }
+        [HttpPost]
+        [Route("Excluir-Maquina/{id}")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> ExcluirEquipamento(int id)
+        {
+            var excluirMaquina = await _repositorio.ExcluirEquipamento(id);
+
+            if (excluirMaquina)
+            {
+                return Ok(excluirMaquina);
+            }
+
+            return BadRequest("Erro ao excluir o equipamento.");
+        }
+
+        
+        [HttpPut]
+        [Route("Editar-Maquina/{id}")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> AtualizarMaquina(int id, [FromBody] Equipamentos equipamentos)
+        {
+            if (equipamentos == null)
+            {
+                return BadRequest($"Maquina não encontrada");
+            }
+
+            var atualizarEquipamento = await _repositorio.AtualizarEquipamento(equipamentos, id);
+            return Ok(atualizarEquipamento);
         }
     }
 }
