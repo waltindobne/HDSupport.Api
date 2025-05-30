@@ -46,6 +46,34 @@ namespace HD_Support_API.Controllers
             var ListaFuncionarios = await _repositorio.ListarFuncionario();
             return Ok(ListaFuncionarios);
         }
+        [HttpGet]
+        [Route("Buscar-usuario-Por-ID/{id}")]
+        [Authorize(Roles = "Gerente,HelpDesk,RH")]
+        public async Task<IActionResult> BuscarUsuarioPorID(int id)
+        {
+            var buscaUsuario = await _repositorio.BuscarUsuarioPorId(id);
+
+            if (buscaUsuario == null)
+            {
+                return NotFound($"Cadastro com ID:{id} não encontrado");
+            }
+
+            return Ok(buscaUsuario);
+        }
+        [HttpGet]
+        [Route("BuscarPorTokenJWT/{token}")]
+        [Authorize(Roles = "Funcionario,Gerente,HelpDesk,RH")]
+        public async Task<IActionResult> BuscarPorTokenJWT(string token)
+        {
+            var Perfil = await _repositorio.BuscarPorTokenJWT(token);
+
+            if (Perfil == null)
+            {
+                return NotFound($"Perfil não encontrado");
+            }
+
+            return Ok(Perfil);
+        }
 
         [HttpPost]
         [Route("Registro")]
@@ -62,34 +90,10 @@ namespace HD_Support_API.Controllers
             return Ok(usuarioAdicionado);
         }
 
-        [HttpPut]
-        [Route("Editar-usuario/{id}")]
-        [Authorize(Roles = "Gerente,HelpDesk,RH")]
-        public async Task<IActionResult> AtualizarUsuario(int id, [FromBody] Usuarios usuario)
-        {
-            if (usuario == null)
-            {
-                return BadRequest($"Cadastro com ID:{id} não encontrado");
-            }
 
-            var AtualizarHelpDesk = await _repositorio.AtualizarUsuario(usuario, id);
-            return Ok(AtualizarHelpDesk);
-        }
+        
 
-        [HttpGet]
-        [Route("Buscar-usuario-Por-ID/{id}")]
-        [Authorize(Roles = "Gerente,HelpDesk,RH")]
-        public async Task<IActionResult> BuscarUsuarioPorID(int id)
-        {
-            var buscaUsuario = await _repositorio.BuscarUsuarioPorId(id);
-
-            if (buscaUsuario == null)
-            {
-                return NotFound($"Cadastro com ID:{id} não encontrado");
-            }
-
-            return Ok(buscaUsuario);
-        }
+        
 
         [HttpPost]
         [Route("Excluir-usuario/{id}")]
@@ -106,20 +110,7 @@ namespace HD_Support_API.Controllers
             return Ok(ExcluirPerfil);
         }
 
-        [HttpGet]
-        [Route("BuscarPorTokenJWT/{token}")]
-        [Authorize(Roles = "Funcionario,Gerente,HelpDesk,RH")]
-        public async Task<IActionResult> BuscarPorTokenJWT(string token)
-        {
-            var Perfil = await _repositorio.BuscarPorTokenJWT(token);
-
-            if (Perfil == null)
-            {
-                return NotFound($"Perfil não encontrado");
-            }
-
-            return Ok(Perfil);
-        }
+        
 
         [HttpPost]
         [Route("Login")]
@@ -140,15 +131,7 @@ namespace HD_Support_API.Controllers
             };
         }
 
-        [HttpPut]
-        [Route("Atualizar-status-usuario/{id}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> AtualizarStatusHelpDesk(int id, int status)
-        {
-            var result = await _repositorio.AtualizarStatus(id, status);
-
-            return Ok(result);
-        }
+        
 
         [HttpPost]
         [Route("Recuperacao-Senha")]
@@ -211,6 +194,28 @@ namespace HD_Support_API.Controllers
                 return StatusCode(500, $"Erro ao confirmar o E-mail");
             }
             
+        }
+        [HttpPut]
+        [Route("Editar-usuario/{id}")]
+        [Authorize(Roles = "Gerente,HelpDesk,RH")]
+        public async Task<IActionResult> AtualizarUsuario(int id, [FromBody] Usuarios usuario)
+        {
+            if (usuario == null)
+            {
+                return BadRequest($"Cadastro com ID:{id} não encontrado");
+            }
+
+            var AtualizarHelpDesk = await _repositorio.AtualizarUsuario(usuario, id);
+            return Ok(AtualizarHelpDesk);
+        }
+        [HttpPut]
+        [Route("Atualizar-status-usuario/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AtualizarStatusHelpDesk(int id, int status)
+        {
+            var result = await _repositorio.AtualizarStatus(id, status);
+
+            return Ok(result);
         }
     }
 }

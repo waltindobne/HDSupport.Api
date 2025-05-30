@@ -25,36 +25,6 @@ namespace HD_Support_API.Controllers
             var listaEquipamentos = await _repositorio.ListarEmprestimos();
             return Ok(listaEquipamentos);
         }
-
-        [HttpPost]
-        [Route("Registro-Emprestimo")]
-        [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> AdicionarEmprestimo(string idPatrimonio, string email)
-        {
-            if (idPatrimonio == "" || email == "")
-            {
-                return BadRequest("Dados do HelpDesk não fornecidos");
-            }
-
-            var equipamentoAdicionado = await _repositorio.AdicionarEmprestimo(idPatrimonio, email);
-
-            return Ok(equipamentoAdicionado);
-        }
-
-        [HttpPut]
-        [Route("Editar-Emprestimo/{id}")]
-        [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> AtualizarEmprestimo(int id, [FromBody] Emprestimos emprestimo)
-        {
-            if (emprestimo == null)
-            {
-                return BadRequest($"Cadastro com ID:{id} não encontrado");
-            }
-
-            var atualizarEmprestimo = await _repositorio.AtualizarEmprestimo(emprestimo, id);
-            return Ok(atualizarEmprestimo);
-        }
-
         [HttpGet]
         [Route("Buscar-Emprestimo-Por-id/{id}")]
         [AllowAnonymous]
@@ -71,6 +41,20 @@ namespace HD_Support_API.Controllers
         }
 
         [HttpPost]
+        [Route("Registro-Emprestimo")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> AdicionarEmprestimo(string idPatrimonio, string email)
+        {
+            if (idPatrimonio == "" || email == "")
+            {
+                return BadRequest("Dados do HelpDesk não fornecidos");
+            }
+
+            var equipamentoAdicionado = await _repositorio.AdicionarEmprestimo(idPatrimonio, email);
+
+            return Ok(equipamentoAdicionado);
+        }
+        [HttpPost]
         [Route("Excluir-Emprestimo/{id}")]
         [Authorize(Roles = "Gerente,HelpDesk")]
         public async Task<IActionResult> ExcluirEmprestimo(int id)
@@ -84,6 +68,24 @@ namespace HD_Support_API.Controllers
 
             return Ok(Excluir);
         }
+
+        [HttpPut]
+        [Route("Editar-Emprestimo/{id}")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> AtualizarEmprestimo(int id, [FromBody] Emprestimos emprestimo)
+        {
+            if (emprestimo == null)
+            {
+                return BadRequest($"Cadastro com ID:{id} não encontrado");
+            }
+
+            var atualizarEmprestimo = await _repositorio.AtualizarEmprestimo(emprestimo, id);
+            return Ok(atualizarEmprestimo);
+        }
+
+        
+
+        
     }
 }
 
