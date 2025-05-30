@@ -11,17 +11,17 @@ namespace HD_Support_API.Data.Map
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.funcionarios)
                    .WithMany()
-                   .HasForeignKey(x => x.funcionariosid)
+                   .HasForeignKey(x => x.Idf_Funcionario)
                    .IsRequired();
 
             builder.HasOne(x => x.cliente)
                    .WithMany()
-                   .HasForeignKey(x => x.clienteid)
+                   .HasForeignKey(x => x.Idf_Cliente)
                    .IsRequired();
-            builder.Property(x => x.criptografia).IsRequired();
-            builder.Property(x => x.status).IsRequired();
-            builder.Property(x => x.data_inicio).IsRequired();
-            builder.Property(x => x.data_conclusao);
+            builder.Property(x => x.Criptografia_Conversa).IsRequired();
+            builder.Property(x => x.Stt_Conversa).IsRequired();
+            builder.Property(x => x.Dta_Inicio_Conversa).IsRequired();
+            builder.Property(x => x.Dta_Conclusao_Conversa);
         }
     }
 }

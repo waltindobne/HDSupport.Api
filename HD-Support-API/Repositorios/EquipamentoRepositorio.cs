@@ -23,35 +23,35 @@ namespace HD_Support_API.Repositorios
         }*/
         public async Task<Equipamentos> AdicionarEquipamento(Equipamentos equipamento)
         {
-            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.idpatrimonio == equipamento.idpatrimonio);
+            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.Idf_Patrimonio == equipamento.Idf_Patrimonio);
             if(verificacao == null)
             {
                 Console.WriteLine(DateTime.UtcNow);
-                equipamento.dtemeprestimoinicio = DateTime.UtcNow;
+                equipamento.Dta_Emprestimo_Inicio = DateTime.UtcNow;
                 await _contexto.Equipamento.AddAsync(equipamento);
                 _contexto.SaveChanges();
                 return equipamento;
             }
-            throw new Exception($"O patrimônio com id:{equipamento.idpatrimonio} já está cadastrado.");
+            throw new Exception($"O patrimônio com id:{equipamento.Idf_Patrimonio} já está cadastrado.");
         }
 
         public async Task<Equipamentos> AtualizarEquipamento(Equipamentos equipamento, int id)
         {
             Equipamentos equipamentosPorId = await BuscarEquipamentosPorId(id);
-            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.idpatrimonio == equipamento.idpatrimonio);
+            var verificacao = _contexto.Equipamento.FirstOrDefault(x => x.Idf_Patrimonio == equipamento.Idf_Patrimonio);
             if (equipamentosPorId == null)
             {
                 throw new Exception($"Equipamento de id:{id} não encontrado na base de dados.");
             }
-            if(verificacao == null || verificacao.idpatrimonio == equipamentosPorId.idpatrimonio)
+            if(verificacao == null || verificacao.Idf_Patrimonio == equipamentosPorId.Idf_Patrimonio)
             {
-                equipamentosPorId.idpatrimonio = equipamento.idpatrimonio;
-                equipamentosPorId.modelo = equipamento.modelo;
-                equipamentosPorId.detalhes = equipamento.detalhes;
-                equipamentosPorId.statusequipamento = equipamento.statusequipamento;
-                equipamentosPorId.dtemeprestimoinicio = equipamentosPorId.dtemeprestimoinicio.ToUniversalTime();
+                equipamentosPorId.Idf_Patrimonio = equipamento.Idf_Patrimonio;
+                equipamentosPorId.Modelo_Equipamento = equipamento.Modelo_Equipamento;
+                equipamentosPorId.Dtl_Equipamento = equipamento.Dtl_Equipamento;
+                equipamentosPorId.Stt_Equipamento = equipamento.Stt_Equipamento;
+                equipamentosPorId.Dta_Emprestimo_Inicio = equipamentosPorId.Dta_Emprestimo_Inicio.ToUniversalTime();
 
-                Console.WriteLine(equipamentosPorId.dtemeprestimoinicio.ToUniversalTime());
+                Console.WriteLine(equipamentosPorId.Dta_Emprestimo_Inicio.ToUniversalTime());
 
                 _contexto.Equipamento.Update(equipamentosPorId);
                 await _contexto.SaveChangesAsync();
@@ -64,11 +64,11 @@ namespace HD_Support_API.Repositorios
 
         public async Task<Equipamentos> BuscarEquipamentos(string idPatrimonio)
         {
-            return  _contexto.Equipamento.FirstOrDefault(x => x.idpatrimonio == idPatrimonio);
+            return  _contexto.Equipamento.FirstOrDefault(x => x.Idf_Patrimonio == idPatrimonio);
         }        
         public async Task<Equipamentos> BuscarEquipamentosPorId(int id)
         {
-            var busca =  _contexto.Equipamento.FirstOrDefault(x => x.id == id);
+            var busca =  _contexto.Equipamento.FirstOrDefault(x => x.Id == id);
             if(busca == null)
             {
                 throw new Exception($"Equipamento com o ID {id} não encontrado");
@@ -85,9 +85,9 @@ namespace HD_Support_API.Repositorios
                 throw new Exception($"Equipamento de id:{id} não encontrado na base de dados.");
             }
 
-            var idPatrimonio = Convert.ToInt16(busca.idpatrimonio);
+            var idPatrimonio = Convert.ToInt16(busca.Idf_Patrimonio);
 
-            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.equipamentosid == idPatrimonio);
+            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.Idf_Equipamentos == idPatrimonio);
             if (emprestimo != null)
                 _contexto.Remove(emprestimo);
 
@@ -106,10 +106,10 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<int>> DadosEquipamentoPizza()
         {
-            var disponivel = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.Disponivel).Count();
-            var ocupado = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.Emprestado).Count();
-            var emreparo = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.EmConserto).Count();
-            var emconserto = _contexto.Equipamento.Where(x => x.statusequipamento == Enums.StatusEquipamento.Danificado).Count();
+            var disponivel = _contexto.Equipamento.Where(x => x.Stt_Equipamento == Enums.StatusEquipamento.Disponivel).Count();
+            var ocupado = _contexto.Equipamento.Where(x => x.Stt_Equipamento == Enums.StatusEquipamento.Emprestado).Count();
+            var emreparo = _contexto.Equipamento.Where(x => x.Stt_Equipamento == Enums.StatusEquipamento.EmConserto).Count();
+            var emconserto = _contexto.Equipamento.Where(x => x.Stt_Equipamento == Enums.StatusEquipamento.Danificado).Count();
             List<int> dados = [disponivel, ocupado, emreparo, emconserto];
             return dados;
         }
@@ -124,7 +124,7 @@ namespace HD_Support_API.Repositorios
                 var tipo = tipos[i];
                 for(int j = 1; j < 5; j++)
                 {
-                    var resultado = _contexto.Equipamento.Where(x => x.tipo == tipo && x.statusequipamento == (StatusEquipamento)j).Count();
+                    var resultado = _contexto.Equipamento.Where(x => x.Tpo_Equipamento == tipo && x.Stt_Equipamento == (StatusEquipamento)j).Count();
                     equipamento.Add(resultado);
                 }
                 dados.Add(equipamento);

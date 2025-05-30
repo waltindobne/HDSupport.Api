@@ -32,34 +32,34 @@ namespace HD_Support_API.Repositorios
                 throw new ArgumentNullException(nameof(usuario), "O usuário não pode ser nulo");
             }
 
-            if (string.IsNullOrEmpty(usuario.email))
+            if (string.IsNullOrEmpty(usuario.Eml_Usuario))
             {
-                throw new ArgumentException("O email não pode ser vazio", nameof(usuario.email));
+                throw new ArgumentException("O email não pode ser vazio", nameof(usuario.Eml_Usuario));
             }
 
             string paternInvalidoEmail = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
-            if(!Regex.IsMatch(usuario.email, paternInvalidoEmail))
+            if(!Regex.IsMatch(usuario.Eml_Usuario, paternInvalidoEmail))
             {
                 throw new Exception("Endereço de e-mail inválido.");
             }
 
-            if(usuario.cargo.Contains("Gerente") || usuario.cargo.Contains("Funcionario")  || usuario.cargo.Contains("RH") || usuario.cargo.Contains("HelpDesk")){
-                if (usuario.email.Contains("@employer.com.br") || usuario.email.Contains("@bne-empregos.com.br"))
+            if(usuario.Cargo_Usuario.Contains("Gerente") || usuario.Cargo_Usuario.Contains("Funcionario")  || usuario.Cargo_Usuario.Contains("RH") || usuario.Cargo_Usuario.Contains("HelpDesk")){
+                if (usuario.Eml_Usuario.Contains("@employer.com.br") || usuario.Eml_Usuario.Contains("@bne-empregos.com.br"))
                 {
-                    var usuarioBancoComEmail = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.email == usuario.email);
+                    var usuarioBancoComEmail = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Eml_Usuario == usuario.Eml_Usuario);
                     if(usuarioBancoComEmail == null)
                     {
-                        usuario.senha = AesOperation.CriarHash(usuario.senha);
-                        var emailEnvio = usuario.email;
-                        usuario.email = "naoConfirmado";
-                        usuario.status = StatusHelpDesk.naoConfirmado;
+                        usuario.Sen_Usuario = AesOperation.CriarHash(usuario.Sen_Usuario);
+                        var emailEnvio = usuario.Eml_Usuario;
+                        usuario.Eml_Usuario = "naoConfirmado";
+                        usuario.Status_Usuario = StatusHelpDesk.naoConfirmado;
                         await _contexto.Usuarios.AddAsync(usuario);
                         await _contexto.SaveChangesAsync();
-                        var idNovo = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.email == usuario.email);
+                        var idNovo = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Eml_Usuario == usuario.Eml_Usuario);
                         
                         try 
                         {
-                            await RedefinirEmail(emailEnvio, idNovo.id);
+                            await RedefinirEmail(emailEnvio, idNovo.Id);
                         }
                         catch (Exception ex)
                         {
@@ -86,13 +86,13 @@ namespace HD_Support_API.Repositorios
 
         public async Task<bool> AtualizarStatus(int id, int status)
         {
-            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.id == id);
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
             if (busca == null)
             {
                 throw new Exception("ID não encontrado.");
             }
             StatusHelpDeskConversa statusConversa = (StatusHelpDeskConversa)status;
-            busca.statusconversa = statusConversa;
+            busca.Status_Conversa = statusConversa;
             _contexto.Usuarios.Update(busca);
             await _contexto.Usuarios.ToListAsync();
             return true;
@@ -107,14 +107,14 @@ namespace HD_Support_API.Repositorios
             {
                 throw new Exception($"id:{id} não encontrado na base de dados.");
             }
-            if (!Regex.IsMatch(usuario.email, paternInvalidoEmail))
+            if (!Regex.IsMatch(usuario.Eml_Usuario, paternInvalidoEmail))
             {
                 throw new Exception("Endereço de e-mail inválido.");
             }
 
-            buscarId.nome = usuario.nome;
-            buscarId.telefone = usuario.telefone;
-            buscarId.imagem = usuario.imagem;
+            buscarId.Nme_Usuario = usuario.Nme_Usuario;
+            buscarId.Tel_Usuario = usuario.Tel_Usuario;
+            buscarId.Img_Usuario = usuario.Img_Usuario;
 
             _contexto.Usuarios.Update(buscarId);
             await _contexto.SaveChangesAsync();
@@ -129,20 +129,20 @@ namespace HD_Support_API.Repositorios
                 throw new ArgumentNullException(nameof(email), "Email vazio ou nulo.");
             }
 
-            var Usuario = _contexto.Usuarios.FirstOrDefault(x => x.email == email);
+            var Usuario = _contexto.Usuarios.FirstOrDefault(x => x.Eml_Usuario == email);
 
             if (Usuario == null)
             {
                 throw new Exception("Nenhum usuário encontrado com o email fornecido.");
             }
 
-            return Usuario.id;
+            return Usuario.Id;
         }
 
 
         public async Task<Usuarios> BuscarUsuario(string nome, string telefone)
         {
-            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.nome == nome || x.telefone == telefone);
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Nme_Usuario == nome || x.Tel_Usuario == telefone);
             if (busca != null)
             {
                 return busca;
@@ -152,7 +152,7 @@ namespace HD_Support_API.Repositorios
 
         public async Task<Usuarios> BuscarUsuarioPorId(int id)
         {
-            Usuarios usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.id == id);
+            Usuarios usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
             if (usuario == null)
             {
                 throw new Exception("ID não encontrado.");
@@ -169,7 +169,7 @@ namespace HD_Support_API.Repositorios
                 throw new Exception($"HelpDesk de id:{id} não encontrado na base de dados.");
             }
 
-            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.usuarioid == id);
+            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.Idf_Usuario == id);
             if(emprestimo != null)
                 _contexto.Remove(emprestimo);
 
@@ -181,14 +181,14 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<Usuarios>> ListarFuncionario()
         {
-            var lista = await _contexto.Usuarios.Where(x => x.cargo == "Funcionario" && x.status != StatusHelpDesk.naoConfirmado || x.cargo == "RH" && x.status != StatusHelpDesk.naoConfirmado).ToListAsync();
+            var lista = await _contexto.Usuarios.Where(x => x.Cargo_Usuario == "Funcionario" && x.Status_Usuario != StatusHelpDesk.naoConfirmado || x.Cargo_Usuario == "RH" && x.Status_Usuario != StatusHelpDesk.naoConfirmado).ToListAsync();
             return lista;
         }
 
 
         public async Task<List<Usuarios>> ListarHelpDesk()
         {
-            var lista = await _contexto.Usuarios.Where(x => x.cargo == "HelpDesk" && x.status != StatusHelpDesk.naoConfirmado).ToListAsync();
+            var lista = await _contexto.Usuarios.Where(x => x.Cargo_Usuario == "HelpDesk" && x.Status_Usuario != StatusHelpDesk.naoConfirmado).ToListAsync();
 
             return lista;
         }
@@ -196,11 +196,11 @@ namespace HD_Support_API.Repositorios
         public async Task<Usuarios> Login(string email, string senha)
         {
             var senhaHash = AesOperation.CriarHash(senha);
-            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.email == email);
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Eml_Usuario == email);
 
-            if (busca != null && busca.senha == senhaHash)
+            if (busca != null && busca.Sen_Usuario == senhaHash)
             {
-                if(busca.status == StatusHelpDesk.naoConfirmado)
+                if(busca.Status_Usuario == StatusHelpDesk.naoConfirmado)
                 {
                     throw new Exception("Confirme seu email");
                 }
@@ -228,10 +228,10 @@ namespace HD_Support_API.Repositorios
             string tokenRedefinicaoSenha = Guid.NewGuid().ToString();
 
             DateTime dataHoraGeracaoToken = DateTime.Now;
-            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.id == idUsuario);
+            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Id == idUsuario);
             string dataHoraGeracaoTokenString = dataHoraGeracaoToken.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            usuario.tokenredefinicaosenha = tokenRedefinicaoSenha;
-            usuario.datahorageracaotoken = dataHoraGeracaoTokenString;
+            usuario.Token_Redefinicao_Senha = tokenRedefinicaoSenha;
+            usuario.Dta_Token = dataHoraGeracaoTokenString;
             await _contexto.SaveChangesAsync();
 
             var texto = $@"
@@ -305,15 +305,15 @@ namespace HD_Support_API.Repositorios
                 return new BadRequestObjectResult("Token inválido ou expirado.");
             }
 
-            if (TokenRedefinicaoSenhaExpirado(usuario.datahorageracaotoken))
+            if (TokenRedefinicaoSenhaExpirado(usuario.Dta_Token))
             {
                 return new BadRequestObjectResult("Token de redefinição de senha expirado. Solicite um novo token.");
             }
-            if(novaSenha == usuario.senha) {
+            if(novaSenha == usuario.Sen_Usuario) {
                 return new BadRequestObjectResult("Você não pode utilizar uma senha que ja utilizou anteriormente");
             }
-            usuario.senha = AesOperation.CriarHash(novaSenha);
-            usuario.tokenredefinicaosenha = null;
+            usuario.Sen_Usuario = AesOperation.CriarHash(novaSenha);
+            usuario.Token_Redefinicao_Senha = null;
 
             await _contexto.SaveChangesAsync();
             return new OkResult();
@@ -338,7 +338,7 @@ namespace HD_Support_API.Repositorios
                 throw new Exception("Endereço de e-mail inválido.");
             }
 
-            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.email == email);
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Eml_Usuario == email);
             if(busca != null)
             {
                 throw new Exception("Endereço de e-mail já cadastrado.");
@@ -350,8 +350,8 @@ namespace HD_Support_API.Repositorios
 
                 DateTime dataHoraGeracaoToken = DateTime.Now;
                 string dataHoraGeracaoTokenString = dataHoraGeracaoToken.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                usuario.tokenredefinicaosenha = tokenRedefinicaoSenha;
-                usuario.datahorageracaotoken = dataHoraGeracaoTokenString;
+                usuario.Token_Redefinicao_Senha = tokenRedefinicaoSenha;
+                usuario.Dta_Token = dataHoraGeracaoTokenString;
                 await _contexto.SaveChangesAsync();
 
                 var texto = $@"
@@ -394,8 +394,8 @@ namespace HD_Support_API.Repositorios
                             </header>
                             <div class='container'>
                                 <p>Olá,</p>
-                                <p>Seu link de confirmação de email é: <a class='link' href='localhost:3000/ConfirmarEmail?token={usuario.tokenredefinicaosenha}&email={email}'>Clique aqui</a>.</p>
-                                <p><b>Token de confirmação:</b> {usuario.tokenredefinicaosenha}</p>
+                                <p>Seu link de confirmação de email é: <a class='link' href='localhost:3000/ConfirmarEmail?token={usuario.Token_Redefinicao_Senha}&email={email}'>Clique aqui</a>.</p>
+                                <p><b>Token de confirmação:</b> {usuario.Token_Redefinicao_Senha}</p>
                                 <p>Não compartilhe seu link de redefinição, ele expirará dentro de 15 minutos.</p>
                                 <p>Atenciosamente,<br>Equipe HD-Support</p>
                             </div>
@@ -410,8 +410,8 @@ namespace HD_Support_API.Repositorios
                 catch (Exception ex)
                 {
                     // Se falhar ao enviar o email, removemos o token gerado
-                    usuario.tokenredefinicaosenha = null;
-                    usuario.datahorageracaotoken = null;
+                    usuario.Token_Redefinicao_Senha = null;
+                    usuario.Dta_Token = null;
                     await _contexto.SaveChangesAsync();
                     throw new Exception($"Erro ao enviar email de confirmação: {ex.Message}");
                 }
@@ -429,19 +429,19 @@ namespace HD_Support_API.Repositorios
                 return new BadRequestObjectResult("Token inválido ou expirado.");
             }
 
-            if (TokenRedefinicaoSenhaExpirado(usuario.datahorageracaotoken))
+            if (TokenRedefinicaoSenhaExpirado(usuario.Dta_Token))
             {
                 return new BadRequestObjectResult("Token de confirmação de email expirado. Solicite um novo token.");
             }
 
-            usuario.tokenredefinicaosenha = null;
+            usuario.Token_Redefinicao_Senha = null;
 
-            if(usuario.email != email && email != null)
+            if(usuario.Eml_Usuario != email && email != null)
             {
-                usuario.email = email;
+                usuario.Eml_Usuario = email;
             }
 
-            usuario.status = StatusHelpDesk.Disponivel;
+            usuario.Status_Usuario = StatusHelpDesk.Disponivel;
             _contexto.Usuarios.Update(usuario);
 
 
@@ -451,19 +451,19 @@ namespace HD_Support_API.Repositorios
 
         private async Task<Usuarios> BuscarUsuarioPorToken(string token)
         {
-            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.tokenredefinicaosenha == token);
+            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Token_Redefinicao_Senha == token);
             return usuario;
         }
 
         private async Task<bool> UsuarioPossuiTokenAtivo(int idUsuario)
         {
-            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.id == idUsuario);
+            var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Id == idUsuario);
             if (usuario == null)
             {
                 return false;
             }
-            if (!string.IsNullOrEmpty(usuario.tokenredefinicaosenha) &&
-                !TokenRedefinicaoSenhaExpirado(usuario.datahorageracaotoken))
+            if (!string.IsNullOrEmpty(usuario.Token_Redefinicao_Senha) &&
+                !TokenRedefinicaoSenhaExpirado(usuario.Dta_Token))
             {
                 return true;
             }
@@ -488,7 +488,7 @@ namespace HD_Support_API.Repositorios
         {
             var email = TokenService.ReadJWT(token);
             email.Replace(" ", "");
-            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.email == email);
+            var busca = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Eml_Usuario == email);
             return busca;
         }
     }

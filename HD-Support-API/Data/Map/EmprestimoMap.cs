@@ -8,16 +8,16 @@ namespace HD_Support_API.Data.Map
     {
         public void Configure(EntityTypeBuilder<Emprestimos> builder)
         {
-            builder.HasKey(x => x.id);
+            builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.usuario)
                    .WithMany()
-                   .HasForeignKey(x => x.usuarioid)
+                   .HasForeignKey(x => x.Idf_Usuario)
                    .IsRequired();
 
             builder.HasOne(x => x.equipamentos)
                    .WithMany()
-                   .HasForeignKey(x => x.equipamentosid)
+                   .HasForeignKey(x => x.Idf_Equipamentos)
                    .IsRequired();
         }
     }

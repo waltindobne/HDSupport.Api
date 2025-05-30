@@ -8,15 +8,15 @@ namespace HD_Support_API.Data.Map
     {
         public void Configure(EntityTypeBuilder<Equipamentos> builder)
         {
-            builder.HasKey(x => x.id);
-            builder.Property(x => x.idpatrimonio).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.modelo).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.detalhes);
-            builder.Property(x => x.tipo);
-            builder.Property(x => x.dtemeprestimoinicio);
-            builder.Property(x => x.dtemeprestimofinal);
-            builder.Property(x => x.statusequipamento);
-            builder.Property(x => x.profissional_hd);
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Idf_Patrimonio).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Modelo_Equipamento).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.Dtl_Equipamento);
+            builder.Property(x => x.Tpo_Equipamento);
+            builder.Property(x => x.Dta_Emprestimo_Inicio);
+            builder.Property(x => x.Dta_Emprestimo_Final);
+            builder.Property(x => x.Stt_Equipamento);
+            builder.Property(x => x.Profissional_Hd);
         }
     }
 }
