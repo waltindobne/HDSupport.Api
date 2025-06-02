@@ -2,7 +2,7 @@
 
 namespace HD_Support_API.Models
 {
-    [Table("emprestimos")]
+    [Table("TAB_Emprestimos")]
     public class Emprestimos
     {
         public int Id { get; set; }

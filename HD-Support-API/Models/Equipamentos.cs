@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HD_Support_API.Models
 {
-    [Table("equipamentos")]
+    [Table("TAB_Equipamentos")]
     public class Equipamentos
     {
         public int Id { get; set; }

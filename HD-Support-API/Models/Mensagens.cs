@@ -2,7 +2,7 @@
 
 namespace HD_Support_API.Models
 {
-    [Table("mensagens")]
+    [Table("TAB_Mensagens")]
     public class Mensagens
     {
         public int Id { get; set; }

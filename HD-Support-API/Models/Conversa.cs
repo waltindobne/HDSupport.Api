@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HD_Support_API.Models
 {
-    [Table("conversa")]
+    [Table("TAB_Conversas")]
     public class Conversa
     {
 		public int Id {  get; set; }
@@ -12,7 +12,6 @@ namespace HD_Support_API.Models
         public Usuarios? funcionarios { get; set; }
         public int? Idf_Funcionario { get; set; }
 
-        // Relacionamento com clientes
         public Usuarios cliente { get; set; }
         public int Idf_Cliente { get; set; }
         public TipoConversa? Tipo_Conversa { get; set; }
