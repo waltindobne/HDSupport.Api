@@ -83,22 +83,6 @@ namespace HD_Support_API.Controllers
 
             return Ok(equipamentoAdicionado);
         }
-        [HttpPost]
-        [Route("Excluir-Maquina/{id}")]
-        [Authorize(Roles = "Gerente,HelpDesk")]
-        public async Task<IActionResult> ExcluirEquipamento(int id)
-        {
-            var excluirMaquina = await _repositorio.ExcluirEquipamento(id);
-
-            if (excluirMaquina)
-            {
-                return Ok(excluirMaquina);
-            }
-
-            return BadRequest("Erro ao excluir o equipamento.");
-        }
-
-        
         [HttpPut]
         [Route("Editar-Maquina/{id}")]
         [Authorize(Roles = "Gerente,HelpDesk")]
@@ -111,6 +95,20 @@ namespace HD_Support_API.Controllers
 
             var atualizarEquipamento = await _repositorio.AtualizarEquipamento(equipamentos, id);
             return Ok(atualizarEquipamento);
+        }
+        [HttpDelete]
+        [Route("Excluir-Maquina/{id}")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> ExcluirEquipamento(int id)
+        {
+            var excluirMaquina = await _repositorio.ExcluirEquipamento(id);
+
+            if (excluirMaquina)
+            {
+                return Ok(excluirMaquina);
+            }
+
+            return BadRequest("Erro ao excluir o equipamento.");
         }
     }
 }
