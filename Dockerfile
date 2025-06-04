@@ -10,11 +10,12 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia o arquivo de projeto e restaura as dependências
-COPY ["HD-Support-API.csproj", "."]
-RUN dotnet restore "HD-Support-API.csproj"
+COPY HD-Support-API/HD-Support-API.csproj ./HD-Support-API/
+RUN dotnet restore "hd-support-api/HD-Support-API.csproj"
 
 # Copia o restante do código e faz o build
-COPY . .
+COPY HD-Support-API/. ./HD-Support-API/
+WORKDIR /src/HD-Support-API
 RUN dotnet build "HD-Support-API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publica a aplicação
