@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  hd-support-api:
+    build:
+      context: ./HD-Support-API
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    # Reinicia automaticamente se cair
+    restart: always
