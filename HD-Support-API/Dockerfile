@@ -1,30 +1,29 @@
-# Acesse https://aka.ms/customizecontainer para saber como personalizar seu contêiner de depuração e como o Visual Studio usa este Dockerfile para criar suas imagens para uma depuração mais rápida.
-
-# Esta fase é usada durante a execução no VS no modo rápido (Padrão para a configuração de Depuração)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
-# Esta fase é usada para compilar o projeto de serviço
+# Etapa 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["HD-Support-API/HD-Support-API.csproj", "HD-Support-API/"]
-RUN dotnet restore "./HD-Support-API/HD-Support-API.csproj"
-COPY . .
-WORKDIR "/src/HD-Support-API"
-RUN dotnet build "./HD-Support-API.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-# Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./HD-Support-API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-# Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+# Copia o .csproj e restaura as dependências
+COPY *.sln .
+COPY HD-Support-API/*.csproj ./HD-Support-API/
+RUN dotnet restore
+
+# Copia o restante do código
+COPY HD-Support-API/. ./HD-Support-API/
+WORKDIR /app/HD-Support-API
+
+# Compila em modo Release
+RUN dotnet publish -c Release -o out
+
+# Etapa 2: Runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/HD-Support-API/out ./
+
+# Variável de ambiente opcional para produção
+ENV ASPNETCORE_URLS=http://+:5000
+
+# Expõe a porta
+EXPOSE 5000
+
+# Executa a aplicação
 ENTRYPOINT ["dotnet", "HD-Support-API.dll"]
