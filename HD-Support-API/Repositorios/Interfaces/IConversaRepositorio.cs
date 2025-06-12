@@ -16,6 +16,7 @@ namespace HD_Support_API.Repositorios.Interfaces
         Task<List<Conversa>> ListarConversas(int idUsuario);
         Task<List<Conversa>> ListarAllChamados();
         Task<List<Conversa>> ListarChamados(int tipo, bool aceito = false);
+        Task<List<Conversa>> ListarTodosChamados();
         Task<List<int>> DadosChamadosDashboard();
     }
 }
