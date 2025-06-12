@@ -159,6 +159,19 @@ namespace HD_Support_API.Repositorios
             await _contexto.SaveChangesAsync();
             return true;
         }
+        public async Task<List<Conversa>> ListarAllChamados()
+        {
+            var conversas = await _contexto.Conversa.ToListAsync();
+
+            for (var i = 0; i < conversas.Count; i++)
+            {
+                conversas[i].cliente = await _contexto.Usuarios.FindAsync(conversas[i].Idf_Cliente);
+                conversas[i].funcionarios = await _contexto.Usuarios.FindAsync(conversas[i].Idf_Funcionario);
+            }
+
+            return conversas;
+        }
+
 
         public async Task<List<Conversa>> ListarChamados(int tipo, bool aceito = false)
         {
@@ -219,9 +232,9 @@ namespace HD_Support_API.Repositorios
 
         public async Task<List<int>> DadosChamadosDashboard()
         {
-            var aberto = _contexto.Conversa.Where(x => x.Stt_Conversa == Enums.StatusConversa.NaoAceito && x.Tipo_Conversa == TipoConversa.HelpDesk).Count();
-            var pendente = _contexto.Conversa.Where(x => x.Stt_Conversa == Enums.StatusConversa.EmAndamento && x.Tipo_Conversa == TipoConversa.HelpDesk).Count();
-            var concluido = _contexto.Conversa.Where(x => x.Stt_Conversa == Enums.StatusConversa.Encerrado && x.Tipo_Conversa == TipoConversa.HelpDesk).Count();
+            var aberto = _contexto.Conversa.Where(x => x.Stt_Conversa == StatusConversa.NaoAceito && x.Tipo_Conversa == TipoConversa.HelpDesk).Count();
+            var pendente = _contexto.Conversa.Where(x => x.Stt_Conversa == StatusConversa.EmAndamento && x.Tipo_Conversa == TipoConversa.HelpDesk).Count();
+            var concluido = _contexto.Conversa.Where(x => x.Stt_Conversa == StatusConversa.Encerrado && x.Tipo_Conversa == TipoConversa.HelpDesk).Count();
             List<int> dados = [aberto, pendente, concluido];
             return dados;
         }

@@ -1,4 +1,5 @@
 ﻿using HD_Support_API.Models;
+using HD_Support_API.Repositorios;
 using HD_Support_API.Repositorios.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -54,6 +55,15 @@ namespace HD_Support_API.Controllers
         public async Task<IActionResult> ListarChamados(int tipo, bool aceito = false)
         {
             var Chamados = await _repositorio.ListarChamados(tipo, aceito);
+            return Ok(Chamados);
+        }
+
+        [HttpGet]
+        [Route("Listar-Todos-Chamados")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> ListarAllChamados()
+        {
+            var Chamados = await _repositorio.ListarAllChamados();
             return Ok(Chamados);
         }
 
