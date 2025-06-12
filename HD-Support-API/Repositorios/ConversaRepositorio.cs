@@ -49,7 +49,7 @@ namespace HD_Support_API.Repositorios
                 Usuarios funcionario = await _contexto.Usuarios.FindAsync(conversa.Idf_Funcionario);
                 conversa.funcionarios = funcionario;
             }
-            conversa.Dta_Inicio_Conversa = DateTime.UtcNow;
+            conversa.Dta_Inicio_Conversa = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
             await _contexto.Conversa.AddAsync(conversa);
             await _contexto.SaveChangesAsync();
             return conversa;
@@ -87,7 +87,8 @@ namespace HD_Support_API.Repositorios
                 funcionario.Status_Usuario = StatusHelpDesk.Disponivel;
                 _contexto.Usuarios.Update(funcionario);
             }
-            conversaPorId.Dta_Conclusao_Conversa = DateTime.UtcNow;
+            conversaPorId.Dta_Conclusao_Conversa = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+            conversaPorId.Dta_Inicio_Conversa = DateTime.SpecifyKind(conversaPorId.Dta_Inicio_Conversa, DateTimeKind.Utc);
 
             _contexto.Conversa.Update(conversaPorId);
             await _contexto.SaveChangesAsync();
@@ -181,6 +182,17 @@ namespace HD_Support_API.Repositorios
             
             return ConversaLista;
         }
+        public async Task<List<Conversa>> ListarTodosChamados()
+        {
+            var ConversaLista = await _contexto.Conversa.ToListAsync();
+            for (var i = 0; i < ConversaLista.Count(); i++)
+            {
+                ConversaLista[i].cliente = await _contexto.Usuarios.FindAsync(ConversaLista[i].Idf_Cliente);
+                if (ConversaLista[i].Idf_Funcionario != null)
+                    ConversaLista[i].funcionarios = await _contexto.Usuarios.FindAsync(ConversaLista[i].Idf_Funcionario);
+            }
+            return ConversaLista;
+        }
 
         public async Task<List<Conversa>> ListarConversas(int idUsuario)
         {
@@ -205,6 +217,13 @@ namespace HD_Support_API.Repositorios
             }
             StatusConversa StatusCorrigido = (StatusConversa)status;
             conversa.Stt_Conversa = StatusCorrigido;
+            
+            if (StatusCorrigido == StatusConversa.Encerrado)
+            {
+                conversa.Dta_Conclusao_Conversa = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+                conversa.Dta_Inicio_Conversa = DateTime.SpecifyKind(conversa.Dta_Inicio_Conversa, DateTimeKind.Utc);
+            }
+            
             if (StatusCorrigido == StatusConversa.EmAndamento && conversa.Idf_Funcionario != null)
             {
                 Usuarios funcionario = await _contexto.Usuarios.FindAsync(conversa.Idf_Funcionario);

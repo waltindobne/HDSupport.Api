@@ -17,6 +17,14 @@ namespace HD_Support_API.Controllers
         {
             _repositorio = repositorio;
         }
+        [HttpGet]
+        [Route("ListarTodosChamados")]
+        [Authorize(Roles = "Gerente,HelpDesk")]
+        public async Task<IActionResult> ListarTodosChamados()
+        {
+            var chamados = await _repositorio.ListarTodosChamados();
+            return Ok(chamados);
+        }
 
         [HttpGet]
         [Route("Lista-Mensagens")]

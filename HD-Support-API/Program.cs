@@ -41,6 +41,8 @@ builder.Services.AddDbContext<BancoContext>(options =>
 
 builder.Services.AddTransient<IEmailSender, EmailSenderRepositorio>();
 
+
+
 //usando postgresql
 builder.Services.AddTransient<IEquipamentosRepositorio, EquipamentoRepositorio>();
 builder.Services.AddTransient<IEmprestimoRepositorio, EmprestimoRepositorio>();
@@ -59,13 +61,13 @@ builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 // Suporte a CORS (liberado para todos)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    options.AddPolicy("AllowFrontend", builder =>
         builder
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:3000") // ou https se for o caso
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -107,10 +109,10 @@ app.UseSwaggerUI(c =>
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend"); // <-- ANTES de Auth!
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseCors("AllowAll");
 
 app.MapControllers();
 
