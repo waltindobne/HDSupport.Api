@@ -44,7 +44,7 @@ namespace HD_Support_API.Repositorios
             }
 
             if(usuario.Cargo_Usuario.Contains("Gerente") || usuario.Cargo_Usuario.Contains("Funcionario")  || usuario.Cargo_Usuario.Contains("RH") || usuario.Cargo_Usuario.Contains("HelpDesk")){
-                if (usuario.Eml_Usuario.Contains("@employer.com.br") || usuario.Eml_Usuario.Contains("@bne-empregos.com.br"))
+                if (usuario.Eml_Usuario.Contains("@employer.com.br") || usuario.Eml_Usuario.Contains("@bne-empregos.com.br") || usuario.Eml_Usuario.Contains("@bne.com.br"))
                 {
                     var usuarioBancoComEmail = await _contexto.Usuarios.FirstOrDefaultAsync(x => x.Eml_Usuario == usuario.Eml_Usuario);
                     if(usuarioBancoComEmail == null)
@@ -344,7 +344,7 @@ namespace HD_Support_API.Repositorios
                 throw new Exception("Endereço de e-mail já cadastrado.");
             }
 
-            if (email.Contains("@employer.com.br") || email.Contains("@bne-empregos.com.br"))
+            if (email.Contains("@employer.com.br") || email.Contains("@bne-empregos.com.br") || email.Contains("@bne.com.br"))
             {
                 string tokenRedefinicaoSenha = Guid.NewGuid().ToString();
 

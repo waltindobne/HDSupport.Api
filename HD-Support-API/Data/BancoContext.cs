@@ -16,6 +16,7 @@ namespace HD_Support_API.Components
         public DbSet<Conversa> Conversa { get; set; }
         public DbSet<Mensagens> Mensagens { get; set; }
         public DbSet<Usuarios> Usuarios { get; set; }
+        public DbSet<Squad> Squad { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

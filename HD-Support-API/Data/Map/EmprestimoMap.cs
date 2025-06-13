@@ -17,7 +17,7 @@ namespace HD_Support_API.Data.Map
 
             builder.HasOne(x => x.equipamentos)
                    .WithMany()
-                   .HasForeignKey(x => x.Idf_Equipamentos)
+                   .HasForeignKey(x => x.Idf_Equipamento)
                    .IsRequired();
         }
     }

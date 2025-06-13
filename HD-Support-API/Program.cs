@@ -13,7 +13,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicione serviços ao contêiner.
 builder.Services.AddControllers();
 var key = Encoding.ASCII.GetBytes(ChaveSecretaJWT.Chave);
 builder.Services.AddAuthentication(x =>
@@ -34,36 +33,23 @@ builder.Services.AddAuthentication(x =>
         };
     });
 
-//conexão com sql
 builder.Services.AddDbContext<BancoContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddTransient<IEmailSender, EmailSenderRepositorio>();
 
-
-
-//usando postgresql
 builder.Services.AddTransient<IEquipamentosRepositorio, EquipamentoRepositorio>();
 builder.Services.AddTransient<IEmprestimoRepositorio, EmprestimoRepositorio>();
 builder.Services.AddTransient<IConversaRepositorio, ConversaRepositorio>();
 builder.Services.AddTransient<IUsuarioRepositorio, UsuarioRepositorio>();
+builder.Services.AddTransient<ISquadRepositorio, SquadRepositorio>();
 
-
-/*
-    usando sql "normal"
-builder.Services.AddScoped<IEquipamentosRepositorio, EquipamentoRepositorio>();
-builder.Services.AddScoped<IEmprestimoRepositorio, EmprestimoRepositorio>();
-builder.Services.AddScoped<IConversaRepositorio, ConversaRepositorio>();
-builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-*/
-// Suporte a CORS
-// Suporte a CORS (liberado para todos)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", builder =>
         builder
-            .WithOrigins("http://localhost:3000") // ou https se for o caso
+            .WithOrigins("http://localhost:3000")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
@@ -74,7 +60,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "HD Support", Version = "v1" });
 
-    // Configuração da autenticação JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme.",
@@ -109,7 +94,7 @@ app.UseSwaggerUI(c =>
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowFrontend"); // <-- ANTES de Auth!
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

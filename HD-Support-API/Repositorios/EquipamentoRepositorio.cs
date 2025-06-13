@@ -87,7 +87,7 @@ namespace HD_Support_API.Repositorios
 
             var idPatrimonio = Convert.ToInt16(busca.Idf_Patrimonio);
 
-            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.Idf_Equipamentos == idPatrimonio);
+            Emprestimos emprestimo = _contexto.Emprestimo.FirstOrDefault(x => x.Idf_Equipamento == idPatrimonio);
             if (emprestimo != null)
                 _contexto.Remove(emprestimo);
 

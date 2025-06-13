@@ -32,7 +32,7 @@ namespace HD_Support_API.Repositorios
                 {
                     throw new Exception("Nenhum usuário encontrado com esse email.");
                 }
-                emprestimo.Idf_Equipamentos = emprestimo.equipamentos.Id;
+                emprestimo.Idf_Equipamento = emprestimo.equipamentos.Id;
                 emprestimo.Idf_Usuario = emprestimo.usuario.Id;
                 emprestimo.equipamentos.Dta_Emprestimo_Inicio = DateTime.UtcNow;
 
@@ -56,8 +56,8 @@ namespace HD_Support_API.Repositorios
             }
             if(verificarEquipamento == null && verificarFuncionario == null)
             {
-                var equipamento = await _contexto.Equipamento.FirstOrDefaultAsync(x => x.Idf_Patrimonio == Convert.ToString(emprestimo.Idf_Equipamentos));
-                busca.Idf_Equipamentos = equipamento.Id;
+                var equipamento = await _contexto.Equipamento.FirstOrDefaultAsync(x => x.Idf_Patrimonio == Convert.ToString(emprestimo.Idf_Equipamento));
+                busca.Idf_Equipamento = equipamento.Id;
                 busca.Idf_Usuario = emprestimo.Idf_Usuario;
 
                 _contexto.Emprestimo.Update(busca);
@@ -117,10 +117,12 @@ namespace HD_Support_API.Repositorios
             for(var i = 0; i < lista.Count;i++)
             {
                 var emp = lista[i];
-                var equipamento = await _contexto.Equipamento.FindAsync(emp.Idf_Equipamentos);
+                var equipamento = await _contexto.Equipamento.FindAsync(emp.Idf_Equipamento);
                 var usuario = await _contexto.Usuarios.FindAsync(emp.Idf_Usuario);
+                var squad = await _contexto.Squad.FindAsync(emp.Idf_Squad);
                 lista[i].equipamentos = equipamento;
                 lista[i].usuario = usuario;
+                lista[i].squad = squad;
             }
 
             return await _contexto.Emprestimo.ToListAsync();

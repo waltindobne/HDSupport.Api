@@ -19,5 +19,6 @@ namespace HD_Support_API.Models
         public StatusHelpDeskConversa? Status_Conversa { get; set; }
         public string? Token_Redefinicao_Senha { get; set; }
         public string? Dta_Token { get; set; }
+        public int Idf_Squad { get; set; }
     }
 }
